@@ -95,13 +95,4 @@ public class LinkPredictionController {
         return linkPredictionService.getArticleTopicProbability(code);
     }
 
-    @GetMapping("author-topics-words/{authorCode}/{topicId}")
-    public List<String> getAuthorTopicWords(@PathVariable String authorCode,@PathVariable String topicId) {
-        return linkPredictionService.getAuthorTopicWords(authorCode, topicId);
-    }
-
-    @GetMapping("article-topics-words/{articleCode}/{topicId}")
-    public List<String> getArticleTopicWords(@PathVariable String articleCode,@PathVariable String topicId) {
-        return linkPredictionService.getArticleTopicWords(articleCode, topicId);
-    }
 }

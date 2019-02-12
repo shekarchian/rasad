@@ -87,66 +87,52 @@ public class LinkPredictionServiceFakeResult implements LinkPredictionService {
         return articles;
     }
 
-    public List<String> getAuthorTopic(String code){
-        return Arrays.asList("word1", "word2","word3","word4","word5","word6", "word7","word8","word9", "word10", "word11","word12");
+    public List<String> getAuthorTopic(String code) {
+        return Arrays.asList("word1", "word2", "word3", "word4", "word5", "word6", "word7", "word8", "word9", "word10", "word11", "word12");
     }
 
     public List<String> getArticleTopic(String code) {
-        return Arrays.asList("word1", "word2","word3","word4","word5","word6", "word7","word8");
+        return Arrays.asList("word1", "word2", "word3", "word4", "word5", "word6", "word7", "word8");
     }
 
-    public List<String> getAuthorTopicCcs(String code){
-        return Arrays.asList("word1", "word2","word3","word4","word5","word6", "word7","word8","word9", "word10");
+    public List<String> getAuthorTopicCcs(String code) {
+        return Arrays.asList("word1", "word2", "word3", "word4", "word5", "word6", "word7", "word8", "word9", "word10");
     }
 
     public List<String> getArticleTopicCcs(String code) {
-        return Arrays.asList("word1", "word2","word3","word4");
+        return Arrays.asList("word1", "word2", "word3", "word4");
     }
 
-    public List<String> getAuthorTopicKeywords(String code){
-        return Arrays.asList("word1", "word2","word3","word4","word5","word6", "word7","word8","word9", "word10");
+    public List<String> getAuthorTopicKeywords(String code) {
+        return Arrays.asList("word1", "word2", "word3", "word4", "word5", "word6", "word7", "word8", "word9", "word10");
     }
 
-    public List<String> getArticleTopicKeywords(String code){
-        return Arrays.asList("word1", "word2","word3","word4");
+    public List<String> getArticleTopicKeywords(String code) {
+        return Arrays.asList("word1", "word2", "word3", "word4");
     }
 
     public List<TopicProbability> getAuthorTopicProbability(String code) {
-        List<TopicProbability> topicProbabilities = new ArrayList<>();
-        topicProbabilities.add(new TopicProbability("1", .02));
-        topicProbabilities.add(new TopicProbability("2", .02));
-        topicProbabilities.add(new TopicProbability("3", .02));
-        topicProbabilities.add(new TopicProbability("4", .02));
-        topicProbabilities.add(new TopicProbability("5", .4));
-        topicProbabilities.add(new TopicProbability("6", .2));
-        topicProbabilities.add(new TopicProbability("7", .01));
-        topicProbabilities.add(new TopicProbability("8", .005));
-        topicProbabilities.add(new TopicProbability("9", .3));
-        topicProbabilities.add(new TopicProbability("10", .005));
-        return topicProbabilities;
+        return getTopicProbabilities();
     }
 
     public List<TopicProbability> getArticleTopicProbability(String code) {
+        return getTopicProbabilities();
+    }
+
+    private List<TopicProbability> getTopicProbabilities() {
+        List<String> words = Arrays.asList("word1", "word2", "word3", "word4", "word5");
         List<TopicProbability> topicProbabilities = new ArrayList<>();
-        topicProbabilities.add(new TopicProbability("1", .02));
-        topicProbabilities.add(new TopicProbability("2", .02));
-        topicProbabilities.add(new TopicProbability("3", .02));
-        topicProbabilities.add(new TopicProbability("4", .02));
-        topicProbabilities.add(new TopicProbability("5", .4));
-        topicProbabilities.add(new TopicProbability("6", .2));
-        topicProbabilities.add(new TopicProbability("7", .01));
-        topicProbabilities.add(new TopicProbability("8", .005));
-        topicProbabilities.add(new TopicProbability("9", .3));
-        topicProbabilities.add(new TopicProbability("10", .005));
+        topicProbabilities.add(new TopicProbability("1", .02, words));
+        topicProbabilities.add(new TopicProbability("2", .02, words));
+        topicProbabilities.add(new TopicProbability("3", .02, words));
+        topicProbabilities.add(new TopicProbability("4", .02, words));
+        topicProbabilities.add(new TopicProbability("5", .4, words));
+        topicProbabilities.add(new TopicProbability("6", .2, words));
+        topicProbabilities.add(new TopicProbability("7", .01, words));
+        topicProbabilities.add(new TopicProbability("8", .005, words));
+        topicProbabilities.add(new TopicProbability("9", .3, words));
+        topicProbabilities.add(new TopicProbability("10", .005, words));
         return topicProbabilities;
-    }
-
-    public List<String> getAuthorTopicWords(String authorCode, String topicId) {
-        return Arrays.asList("word1", "word2","word3","word4","word5");
-    }
-
-    public List<String> getArticleTopicWords(String articleCode, String topicId) {
-        return Arrays.asList("word1", "word2","word3","word4","word5");
     }
 
 }

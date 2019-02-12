@@ -32,7 +32,5 @@ public interface LinkPredictionService {
 
     List<TopicProbability> getArticleTopicProbability(String code);
 
-    List<String> getAuthorTopicWords(String authorCode, String topicId);
 
-    List<String> getArticleTopicWords(String articleCode, String topicId);
 }

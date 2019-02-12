@@ -9,6 +9,6 @@
    http://www.springframework.org/schema/context/spring-context.xsd">
 
     <context:annotation-config/>
-    <bean id="LinkPredictionService" class="rasad.services.LinkPredictionServiceFakeResult"></bean>
+    <bean id="LinkPredictionService" class="asad.services.LinkPredictionServiceFakeResult"></bean>
 
 </beans>
