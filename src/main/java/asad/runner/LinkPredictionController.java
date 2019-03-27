@@ -2,6 +2,8 @@ package asad.runner;
 
 import asad.model.entity.Article;
 import asad.model.entity.Author;
+import asad.model.wrapper.ArticleWrapper;
+import asad.model.wrapper.AuthorWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
@@ -9,6 +11,7 @@ import asad.model.*;
 import asad.services.LinkPredictionService;
 
 import java.util.List;
+import java.util.Set;
 
 
 @RestController
@@ -24,17 +27,17 @@ public class LinkPredictionController {
     private LinkPredictionService linkPredictionService;
 
     @GetMapping("author/{code}")
-    public Author getAuthorInfo(@PathVariable String code) {
+    public AuthorWrapper getAuthorInfo(@PathVariable String code) {
         return linkPredictionService.getAuthorInfo(Integer.parseInt(code));
     }
 
     @GetMapping("author-articles/{code}")
-    public List<Article> getAuthorArticles(@PathVariable String code) {
+    public Set<ArticleWrapper> getAuthorArticles(@PathVariable String code) {
         return linkPredictionService.getAuthorArticles(Integer.parseInt(code));
     }
 
     @GetMapping("article-info/{code}")
-    public Article getArticleInfo(@PathVariable String code) {
+    public ArticleWrapper getArticleInfo(@PathVariable String code) {
         return linkPredictionService.getArticleInfo(Integer.parseInt(code));
     }
 

@@ -6,8 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Author {
@@ -19,21 +19,16 @@ public class Author {
     @JsonIgnore
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "authors")
 
-    private List<Article> articles = new ArrayList<>();
+    private Set<Article> articles = new HashSet<>();
 
 
     public Author() {
     }
 
-    public Author(Integer id, String name, List<Article> articles) {
+    public Author(Integer id, String name, Set<Article> articles) {
         this.id = id;
         this.name = name;
         this.articles = articles;
-    }
-
-    public Author(Integer id, String name) {
-        this.id = id;
-        this.name = name;
     }
 
     public Integer getId() {
@@ -52,11 +47,11 @@ public class Author {
         this.name = name;
     }
 
-    public List<Article> getArticles() {
+    public Set<Article> getArticles() {
         return articles;
     }
 
-    public void setArticles(List<Article> articles) {
+    public void setArticles(Set<Article> articles) {
         this.articles = articles;
     }
 }

@@ -11,6 +11,9 @@ import java.util.Optional;
 public interface AuthorRepository extends CrudRepository<Author, Integer> {
     Optional<Author> findById(Integer id);
 
-    @Query("select a from Author a join fetch a.articles where a.id = :id")
+    @Query("select author from Author author " +
+            "inner join fetch author.articles article1 " +
+            "inner join fetch article1.authors author2 " +
+            "where author.id = :id ")
     Author findAuthorArticles(@Param("id") Integer id);
 }

@@ -1,15 +1,20 @@
 package asad.services;
 
-import asad.model.*;
+import asad.model.PredictedLinks;
+import asad.model.PredictedLinksRequest;
+import asad.model.TopicProbability;
 import asad.model.entity.Article;
 import asad.model.entity.Author;
+import asad.model.wrapper.ArticleWrapper;
+import asad.model.wrapper.AuthorWrapper;
 
 import java.util.List;
+import java.util.Set;
 
 public interface LinkPredictionService {
-    Author getAuthorInfo(Integer code);
-    List<Article> getAuthorArticles(Integer id);
-    Article getArticleInfo(Integer id);
+    AuthorWrapper getAuthorInfo(Integer code);
+    Set<ArticleWrapper> getAuthorArticles(Integer id);
+    ArticleWrapper getArticleInfo(Integer id);
     PredictedLinks getPredictedLinks(PredictedLinksRequest predictedLinksRequest);
 
     List<Author> getCoAuthors(String code);

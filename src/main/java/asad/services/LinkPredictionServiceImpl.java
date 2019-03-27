@@ -5,13 +5,16 @@ import asad.model.PredictedLinksRequest;
 import asad.model.TopicProbability;
 import asad.model.entity.Article;
 import asad.model.entity.Author;
+import asad.model.wrapper.ArticleWrapper;
+import asad.model.wrapper.AuthorWrapper;
 import asad.repository.ArticleRepository;
 import asad.repository.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class LinkPredictionServiceImpl implements LinkPredictionService {
@@ -22,18 +25,25 @@ public class LinkPredictionServiceImpl implements LinkPredictionService {
     @Autowired
     private ArticleRepository articleRepository;
 
-    public Author getAuthorInfo(Integer id) {
-        return authorRepository.findById(id).get();
+    public AuthorWrapper getAuthorInfo(Integer id) {
+        Author author = authorRepository.findById(id).get();
+        return new AuthorWrapper(author);
     }
 
     @Override
-    public List<Article> getAuthorArticles(Integer id) {
-        return authorRepository.findAuthorArticles(id).getArticles();
+    public Set<ArticleWrapper> getAuthorArticles(Integer id) {
+        Set<Article> articles = authorRepository.findAuthorArticles(id).getArticles();
+        Set<ArticleWrapper> articleWrappers = new HashSet<>();
+        for (Article article : articles) {
+            articleWrappers.add(new ArticleWrapper(article));
+        }
+        return articleWrappers;
     }
 
     @Override
-    public Article getArticleInfo(Integer id) {
-        return articleRepository.findById(id).get();
+    public ArticleWrapper getArticleInfo(Integer id) {
+        Article article = articleRepository.findArticleCompleteInfo(id);
+        return new ArticleWrapper(article);
     }
 
     @Override

@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 import java.util.*;
 
+
 @Entity
 public class Article {
     @Id
@@ -23,12 +24,12 @@ public class Article {
     @JoinTable(name = "article_author",
             joinColumns = {@JoinColumn(name = "article_id")},
             inverseJoinColumns = {@JoinColumn(name = "author_id")})
-    private List<Author> authors = new ArrayList<>();
+    private Set<Author> authors = new HashSet<>();
 
     public Article() {
     }
 
-    public Article(Integer id, String title, String journal, String publisher, Date date, String volume, String abstractColumn, List<Author> authors) {
+    public Article(Integer id, String title, String journal, String publisher, Date date, String volume, String abstractColumn, Set<Author> authors) {
         this.id = id;
         this.title = title;
         this.journal = journal;
@@ -36,12 +37,6 @@ public class Article {
         this.date = date;
         this.volume = volume;
         this.abstractColumn = abstractColumn;
-        this.authors = authors;
-    }
-
-    public Article(Integer id, String title, List<Author> authors) {
-        this.id = id;
-        this.title = title;
         this.authors = authors;
     }
 
@@ -101,11 +96,11 @@ public class Article {
         this.abstractColumn = abstractColumn;
     }
 
-    public List<Author> getAuthors() {
+    public Set<Author> getAuthors() {
         return authors;
     }
 
-    public void setAuthors(List<Author> authors) {
+    public void setAuthors(Set<Author> authors) {
         this.authors = authors;
     }
 }

@@ -1,19 +1,101 @@
 package asad.services;
 
-import asad.model.*;
+import asad.model.PredictedLinks;
+import asad.model.PredictedLinksRequest;
+import asad.model.TopicProbability;
 import asad.model.entity.Article;
-import asad.model.ArticleAuthor;
 import asad.model.entity.Author;
-import asad.repository.ArticleRepository;
-import asad.repository.AuthorRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import asad.model.wrapper.ArticleWrapper;
+import asad.model.wrapper.AuthorWrapper;
 import org.springframework.stereotype.Service;
 
-import java.util.*;
+import java.util.List;
+import java.util.Set;
 
 @Service
 public class LinkPredictionServiceFakeResult implements LinkPredictionService {
+    @Override
+    public AuthorWrapper getAuthorInfo(Integer code) {
 
+        return null;
+    }
+
+    @Override
+    public Set<ArticleWrapper> getAuthorArticles(Integer id) {
+        return null;
+    }
+
+    @Override
+    public ArticleWrapper getArticleInfo(Integer id) {
+        return null;
+    }
+
+    @Override
+    public PredictedLinks getPredictedLinks(PredictedLinksRequest predictedLinksRequest) {
+        return null;
+    }
+
+    @Override
+    public List<Author> getCoAuthors(String code) {
+        return null;
+    }
+
+    @Override
+    public List<Author> getPredictedCoAuthors(String code) {
+        return null;
+    }
+
+    @Override
+    public List<Article> getRelatedArticles(String code) {
+        return null;
+    }
+
+    @Override
+    public List<Article> getPredictedRelatedArticles(String code) {
+        return null;
+    }
+
+    @Override
+    public List<String> getAuthorTopic(String code) {
+        return null;
+    }
+
+    @Override
+    public List<String> getArticleTopic(String code) {
+        return null;
+    }
+
+    @Override
+    public List<String> getAuthorTopicCcs(String code) {
+        return null;
+    }
+
+    @Override
+    public List<String> getArticleTopicCcs(String code) {
+        return null;
+    }
+
+    @Override
+    public List<String> getAuthorTopicKeywords(String code) {
+        return null;
+    }
+
+    @Override
+    public List<String> getArticleTopicKeywords(String code) {
+        return null;
+    }
+
+    @Override
+    public List<TopicProbability> getAuthorTopicProbability(String code) {
+        return null;
+    }
+
+    @Override
+    public List<TopicProbability> getArticleTopicProbability(String code) {
+        return null;
+    }
+
+/*
     @Autowired
     private AuthorRepository authorRepository;
     @Autowired
@@ -28,7 +110,8 @@ public class LinkPredictionServiceFakeResult implements LinkPredictionService {
 
 
 
-       /* Author author1 = new Author(1234, "عباس نوری");
+       */
+/* Author author1 = new Author(1234, "عباس نوری");
         Author author2 = new Author(1245, "جلیل جلیلی");
         Author author3 = new Author(1567, "نورالله عباس‌زاده");
         Author author4 = new Author(1643, "خلیل جلیل‌الهی");
@@ -36,7 +119,8 @@ public class LinkPredictionServiceFakeResult implements LinkPredictionService {
         articles.add(new Article("3134", "Improving Every Thing", Arrays.asList(author1, author2)));
         articles.add(new Article("3454", "Improving Gravity", Arrays.asList(author3, author4, author1)));
         articles.add(new Article("3899", "No Improvement In Every Aspects Of Nothing", Arrays.asList(author2, author3, author1)));
-        return articles;*/
+        return articles;*//*
+
        return null;
     }
 
@@ -151,4 +235,5 @@ public class LinkPredictionServiceFakeResult implements LinkPredictionService {
         return topicProbabilities;
     }
 
+*/
 }
