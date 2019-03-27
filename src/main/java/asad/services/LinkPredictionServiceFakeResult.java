@@ -1,15 +1,44 @@
 package asad.services;
 
 import asad.model.*;
+import asad.model.entity.Article;
+import asad.model.ArticleAuthor;
+import asad.model.entity.Author;
+import asad.repository.ArticleRepository;
+import asad.repository.AuthorRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Service
 public class LinkPredictionServiceFakeResult implements LinkPredictionService {
+
+    @Autowired
+    private AuthorRepository authorRepository;
+    @Autowired
+    private ArticleRepository articleRepository;
+
+    public Author getAuthorInfo(Integer id) {
+        return authorRepository.findById(id).get();
+    }
+
+    public List<Article> getAuthorArticles(Integer id) {
+
+
+
+
+       /* Author author1 = new Author(1234, "عباس نوری");
+        Author author2 = new Author(1245, "جلیل جلیلی");
+        Author author3 = new Author(1567, "نورالله عباس‌زاده");
+        Author author4 = new Author(1643, "خلیل جلیل‌الهی");
+        List<Article> articles = new ArrayList<>();
+        articles.add(new Article("3134", "Improving Every Thing", Arrays.asList(author1, author2)));
+        articles.add(new Article("3454", "Improving Gravity", Arrays.asList(author3, author4, author1)));
+        articles.add(new Article("3899", "No Improvement In Every Aspects Of Nothing", Arrays.asList(author2, author3, author1)));
+        return articles;*/
+       return null;
+    }
 
     public PredictedLinks getPredictedLinks(PredictedLinksRequest predictedLinksRequest) {
         List<Link> links = new ArrayList<>();
@@ -31,60 +60,47 @@ public class LinkPredictionServiceFakeResult implements LinkPredictionService {
         return new Node(wordList);
     }
 
-    public Author getAuthorInfo(String code) {
-        return new Author("2356", "جلال‌ جلایی");
-    }
-
     public List<Author> getCoAuthors(String code) {
         List<Author> authors = new ArrayList<>();
-        authors.add(new Author("1234", "عباس نوری"));
-        authors.add(new Author("1245", "جلیل جلیلی"));
-        authors.add(new Author("1567", "نورالله عباس‌زاده"));
-        authors.add(new Author("1643", "خلیل جلیل‌الهی"));
+        authors.add(new Author(1234, "عباس نوری"));
+        authors.add(new Author(1245, "جلیل جلیلی"));
+        authors.add(new Author(1567, "نورالله عباس‌زاده"));
+        authors.add(new Author( 1643, "خلیل جلیل‌الهی"));
         return authors;
     }
 
     public List<Author> getPredictedCoAuthors(String code) {
         List<Author> authors = new ArrayList<>();
-        authors.add(new Author("1244", "چبران جابر"));
+        authors.add(new Author(1244, "چبران جابر"));
         return authors;
     }
 
-    public List<Article> getAuthorArticles(String code) {
-        Author author1 = new Author("1234", "عباس نوری");
-        Author author2 = new Author("1245", "جلیل جلیلی");
-        Author author3 = new Author("1567", "نورالله عباس‌زاده");
-        Author author4 = new Author("1643", "خلیل جلیل‌الهی");
-        List<Article> articles = new ArrayList<>();
-        articles.add(new Article("3134", "Improving Every Thing", Arrays.asList(author1, author2)));
-        articles.add(new Article("3454", "Improving Gravity", Arrays.asList(author3, author4, author1)));
-        articles.add(new Article("3899", "No Improvement In Every Aspects Of Nothing", Arrays.asList(author2, author3, author1)));
-        return articles;
-    }
-
-    public Article getArticleInfo(String code) {
-        Author author1 = new Author("1234", "عباس نوری");
-        Author author2 = new Author("1245", "جلیل جلیلی");
-        return new Article("3899", "No Improvement In Every Aspects Of Nothing", Arrays.asList(author2, author1));
+    public Article getArticleInfo(Integer code) {
+        Author author1 = new Author(1234, "عباس نوری");
+        Author author2 = new Author(1245, "جلیل جلیلی");
+        return null;
+//        return new Article("3899", "No Improvement In Every Aspects Of Nothing", Arrays.asList(author2, author1));
     }
 
     public List<Article> getRelatedArticles(String code) {
-        Author author1 = new Author("1234", "عباس نوری");
-        Author author2 = new Author("1245", "جلیل جلیلی");
-        Author author3 = new Author("1567", "نورالله عباس‌زاده");
-        Author author4 = new Author("1643", "خلیل جلیل‌الهی");
+        Author author1 = new Author(1234, "عباس نوری");
+        Author author2 = new Author(1245, "جلیل جلیلی");
+        Author author3 = new Author(1567, "نورالله عباس‌زاده");
+        Author author4 = new Author(1643, "خلیل جلیل‌الهی");
         List<Article> articles = new ArrayList<>();
-        articles.add(new Article("567", "Related Article to Every Thing", Arrays.asList(author1, author2)));
-        articles.add(new Article("7644", "Improving Gravity In No Where", Arrays.asList(author3, author4, author1)));
-        return articles;
+//        articles.add(new Article("567", "Related Article to Every Thing", Arrays.asList(author1, author2)));
+//        articles.add(new Article("7644", "Improving Gravity In No Where", Arrays.asList(author3, author4, author1)));
+//        return articles;
+        return null;
     }
 
     public List<Article> getPredictedRelatedArticles(String code) {
-        Author author1 = new Author("1234", "عباس نوری");
-        Author author2 = new Author("1245", "جلیل جلیلی");
+        Author author1 = new Author(1234, "عباس نوری");
+        Author author2 = new Author(1245, "جلیل جلیلی");
         List<Article> articles = new ArrayList<>();
-        articles.add(new Article("70998", "Improvement Does Not Matter", Arrays.asList(author1, author2)));
-        return articles;
+//        articles.add(new Article("70998", "Improvement Does Not Matter", Arrays.asList(author1, author2)));
+//        return articles;
+        return null;
     }
 
     public List<String> getAuthorTopic(String code) {

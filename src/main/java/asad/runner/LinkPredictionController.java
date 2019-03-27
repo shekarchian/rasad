@@ -1,6 +1,9 @@
 package asad.runner;
 
+import asad.model.entity.Article;
+import asad.model.entity.Author;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 import asad.model.*;
 import asad.services.LinkPredictionService;
@@ -12,17 +15,32 @@ import java.util.List;
 @RequestMapping("/api/link-prediction")
 public class LinkPredictionController {
 
+    /*@Qualifier("linkPredictionServiceFakeResult")
+    @Autowired
+    private LinkPredictionService linkPredictionService;*/
+
+    @Qualifier("linkPredictionServiceImpl")
     @Autowired
     private LinkPredictionService linkPredictionService;
+
+    @GetMapping("author/{code}")
+    public Author getAuthorInfo(@PathVariable String code) {
+        return linkPredictionService.getAuthorInfo(Integer.parseInt(code));
+    }
+
+    @GetMapping("author-articles/{code}")
+    public List<Article> getAuthorArticles(@PathVariable String code) {
+        return linkPredictionService.getAuthorArticles(Integer.parseInt(code));
+    }
+
+    @GetMapping("article-info/{code}")
+    public Article getArticleInfo(@PathVariable String code) {
+        return linkPredictionService.getArticleInfo(Integer.parseInt(code));
+    }
 
     @PostMapping("predicted-links")
     public PredictedLinks predictLinks(@RequestBody PredictedLinksRequest predictedLinksRequest) {
         return linkPredictionService.getPredictedLinks(predictedLinksRequest);
-    }
-
-    @GetMapping("author/{code}")
-    public Author getAuthorInfo(@PathVariable String code) {
-        return linkPredictionService.getAuthorInfo(code);
     }
 
     @GetMapping("co-authors/{code}")
@@ -33,16 +51,6 @@ public class LinkPredictionController {
     @GetMapping("predicted-co-authors/{code}")
     public List<Author> getPredictedCoAuthors(@PathVariable String code) {
         return linkPredictionService.getPredictedCoAuthors(code);
-    }
-
-    @GetMapping("author-articles/{code}")
-    public List<Article> getAuthorArticles(@PathVariable String code) {
-        return linkPredictionService.getAuthorArticles(code);
-    }
-
-    @GetMapping("article-info/{code}")
-    public Article getArticleInfo(@PathVariable String code) {
-        return linkPredictionService.getArticleInfo(code);
     }
 
     @GetMapping("related-articles/{code}")
