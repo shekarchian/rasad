@@ -1,7 +1,7 @@
 package asad.model.wrapper;
 
-import asad.model.entity.Article;
-import asad.model.entity.Author;
+import asad.model.dataaccess.entity.Article;
+import asad.model.dataaccess.entity.Author;
 
 import java.util.Date;
 import java.util.HashSet;

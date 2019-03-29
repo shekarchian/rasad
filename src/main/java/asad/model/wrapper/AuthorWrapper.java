@@ -1,6 +1,6 @@
 package asad.model.wrapper;
 
-import asad.model.entity.Author;
+import asad.model.dataaccess.entity.Author;
 
 public class AuthorWrapper {
 

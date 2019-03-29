@@ -1,4 +1,4 @@
-package asad.model.entity;
+package asad.model.dataaccess.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -25,6 +25,13 @@ public class Article {
             joinColumns = {@JoinColumn(name = "article_id")},
             inverseJoinColumns = {@JoinColumn(name = "author_id")})
     private Set<Author> authors = new HashSet<>();
+
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "article_taxonomy_class",
+            joinColumns = {@JoinColumn(name = "article_id")},
+            inverseJoinColumns = {@JoinColumn(name = "taxonomy_class_id")})
+    private Set<Taxonomy> taxonomies = new HashSet<>();
 
     public Article() {
     }
@@ -102,5 +109,9 @@ public class Article {
 
     public void setAuthors(Set<Author> authors) {
         this.authors = authors;
+    }
+
+    public Set<Taxonomy> getTaxonomies() {
+        return taxonomies;
     }
 }

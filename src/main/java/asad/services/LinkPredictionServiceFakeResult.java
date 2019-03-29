@@ -3,8 +3,8 @@ package asad.services;
 import asad.model.PredictedLinks;
 import asad.model.PredictedLinksRequest;
 import asad.model.TopicProbability;
-import asad.model.entity.Article;
-import asad.model.entity.Author;
+import asad.model.dataaccess.entity.Article;
+import asad.model.dataaccess.entity.Author;
 import asad.model.wrapper.ArticleWrapper;
 import asad.model.wrapper.AuthorWrapper;
 import org.springframework.stereotype.Service;
@@ -71,7 +71,7 @@ public class LinkPredictionServiceFakeResult implements LinkPredictionService {
     }
 
     @Override
-    public List<String> getArticleTopicCcs(String code) {
+    public Set<String> getArticleTopicCcs(String code) {
         return null;
     }
 
@@ -81,7 +81,7 @@ public class LinkPredictionServiceFakeResult implements LinkPredictionService {
     }
 
     @Override
-    public List<String> getArticleTopicKeywords(String code) {
+    public Set<String> getArticleTopicKeywords(String code) {
         return null;
     }
 

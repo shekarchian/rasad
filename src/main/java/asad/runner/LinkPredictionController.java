@@ -1,7 +1,7 @@
 package asad.runner;
 
-import asad.model.entity.Article;
-import asad.model.entity.Author;
+import asad.model.dataaccess.entity.Article;
+import asad.model.dataaccess.entity.Author;
 import asad.model.wrapper.ArticleWrapper;
 import asad.model.wrapper.AuthorWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,14 +41,24 @@ public class LinkPredictionController {
         return linkPredictionService.getArticleInfo(Integer.parseInt(code));
     }
 
-    @PostMapping("predicted-links")
-    public PredictedLinks predictLinks(@RequestBody PredictedLinksRequest predictedLinksRequest) {
-        return linkPredictionService.getPredictedLinks(predictedLinksRequest);
+    @GetMapping("article-topics-keywords/{code}")
+    public Set<String> getArticleTopicKeywords(@PathVariable String code) {
+        return linkPredictionService.getArticleTopicKeywords(code);
+    }
+
+    @GetMapping("article-topic-ccs/{code}")
+    public Set<String> getArticleTopicCcs(@PathVariable String code) {
+        return linkPredictionService.getArticleTopicCcs(code);
     }
 
     @GetMapping("co-authors/{code}")
     public List<Author> getCoAuthors(@PathVariable String code) {
         return linkPredictionService.getCoAuthors(code);
+    }
+
+    @PostMapping("predicted-links")
+    public PredictedLinks predictLinks(@RequestBody PredictedLinksRequest predictedLinksRequest) {
+        return linkPredictionService.getPredictedLinks(predictedLinksRequest);
     }
 
     @GetMapping("predicted-co-authors/{code}")
@@ -81,19 +91,9 @@ public class LinkPredictionController {
         return linkPredictionService.getAuthorTopicCcs(code);
     }
 
-    @GetMapping("article-topic-ccs/{code}")
-    public List<String> getArticleTopicCcs(@PathVariable String code) {
-        return linkPredictionService.getArticleTopicCcs(code);
-    }
-
     @GetMapping("author-topics-keyword/{code}")
     public List<String> getAuthorTopicKeywords(@PathVariable String code) {
         return linkPredictionService.getAuthorTopicKeywords(code);
-    }
-
-    @GetMapping("article-topics-keywords/{code}")
-    public List<String> getArticleTopicKeywords(@PathVariable String code) {
-        return linkPredictionService.getArticleTopicKeywords(code);
     }
 
     @GetMapping("author-topics-probability/{code}")

@@ -3,15 +3,19 @@ package asad.services;
 import asad.model.PredictedLinks;
 import asad.model.PredictedLinksRequest;
 import asad.model.TopicProbability;
-import asad.model.entity.Article;
-import asad.model.entity.Author;
+import asad.model.dataaccess.entity.Article;
+import asad.model.dataaccess.entity.ArticleKeyword;
+import asad.model.dataaccess.entity.Author;
+import asad.model.dataaccess.entity.Taxonomy;
+import asad.model.dataaccess.repository.ArticleKeywordRepository;
+import asad.model.dataaccess.repository.ArticleRepository;
+import asad.model.dataaccess.repository.AuthorRepository;
 import asad.model.wrapper.ArticleWrapper;
 import asad.model.wrapper.AuthorWrapper;
-import asad.repository.ArticleRepository;
-import asad.repository.AuthorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -25,6 +29,10 @@ public class LinkPredictionServiceImpl implements LinkPredictionService {
     @Autowired
     private ArticleRepository articleRepository;
 
+    @Autowired
+    private ArticleKeywordRepository articleKeywordRepository;
+
+    private List<Integer> rootTopicsId = Arrays.asList(new Integer[]{2902,2922,3057,3374,3450,3558,3664,3793,3979,4210,4345,4402,4616});
     public AuthorWrapper getAuthorInfo(Integer id) {
         Author author = authorRepository.findById(id).get();
         return new AuthorWrapper(author);
@@ -44,6 +52,25 @@ public class LinkPredictionServiceImpl implements LinkPredictionService {
     public ArticleWrapper getArticleInfo(Integer id) {
         Article article = articleRepository.findArticleCompleteInfo(id);
         return new ArticleWrapper(article);
+    }
+
+    @Override
+    public Set<String> getArticleTopicKeywords(String code) {
+        Set<ArticleKeyword> articleKeywords = articleKeywordRepository.findByArticle_Id(Integer.parseInt(code));
+        Set<String> keywords = new HashSet<>();
+        articleKeywords.forEach((keyword) -> keywords.add(keyword.getKeyword()));
+        return keywords;
+    }
+
+    @Override
+    public Set<String> getArticleTopicCcs(String code) {
+        Set<Taxonomy> articleTaxonomies = articleRepository.findArticleTaxonomies(Integer.parseInt(code));
+        Set<String> taxonomies = new HashSet<>();
+        articleTaxonomies.forEach((taxonomy) -> {
+            if (!rootTopicsId.contains(taxonomy.getId()) && !rootTopicsId.contains(taxonomy.getParent_taxonomy_class_id()))
+            taxonomies.add(taxonomy.getTitle());
+        });
+        return taxonomies;
     }
 
     @Override
@@ -87,17 +114,7 @@ public class LinkPredictionServiceImpl implements LinkPredictionService {
     }
 
     @Override
-    public List<String> getArticleTopicCcs(String code) {
-        return null;
-    }
-
-    @Override
     public List<String> getAuthorTopicKeywords(String code) {
-        return null;
-    }
-
-    @Override
-    public List<String> getArticleTopicKeywords(String code) {
         return null;
     }
 

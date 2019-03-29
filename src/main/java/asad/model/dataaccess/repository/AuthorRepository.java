@@ -1,6 +1,6 @@
-package asad.repository;
+package asad.model.dataaccess.repository;
 
-import asad.model.entity.Author;
+import asad.model.dataaccess.entity.Author;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;

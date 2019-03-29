@@ -1,4 +1,4 @@
-package asad.model.entity;
+package asad.model.dataaccess.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
