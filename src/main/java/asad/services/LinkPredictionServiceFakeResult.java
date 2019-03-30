@@ -76,7 +76,7 @@ public class LinkPredictionServiceFakeResult implements LinkPredictionService {
     }
 
     @Override
-    public List<String> getAuthorTopicKeywords(String code) {
+    public Set<String> getAuthorTopicKeywords(String code) {
         return null;
     }
 

@@ -16,4 +16,5 @@ public interface AuthorRepository extends CrudRepository<Author, Integer> {
             "inner join fetch article1.authors author2 " +
             "where author.id = :id ")
     Author findAuthorArticles(@Param("id") Integer id);
+
 }

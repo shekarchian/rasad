@@ -70,7 +70,26 @@ public class LinkPredictionServiceImpl implements LinkPredictionService {
             if (!rootTopicsId.contains(taxonomy.getId()) && !rootTopicsId.contains(taxonomy.getParent_taxonomy_class_id()))
             taxonomies.add(taxonomy.getTitle());
         });
+        if (taxonomies.size() <3) {
+            articleTaxonomies.forEach((taxonomy) -> {
+                if (rootTopicsId.contains(taxonomy.getParent_taxonomy_class_id()))
+                    taxonomies.add(taxonomy.getTitle());
+            });
+        }
         return taxonomies;
+    }
+
+    @Override
+    public Set<String> getAuthorTopicKeywords(String code) {
+        Set<ArticleKeyword>  articleKeywords = articleKeywordRepository.findAuthorKeywords(Integer.parseInt(code));
+        Set<String> keywords = new HashSet<>();
+        articleKeywords.forEach((keyword) -> keywords.add(keyword.getKeyword()));
+        return keywords;
+    }
+
+    @Override
+    public List<String> getAuthorTopicCcs(String code) {
+        return null;
     }
 
     @Override
@@ -105,16 +124,6 @@ public class LinkPredictionServiceImpl implements LinkPredictionService {
 
     @Override
     public List<String> getArticleTopic(String code) {
-        return null;
-    }
-
-    @Override
-    public List<String> getAuthorTopicCcs(String code) {
-        return null;
-    }
-
-    @Override
-    public List<String> getAuthorTopicKeywords(String code) {
         return null;
     }
 

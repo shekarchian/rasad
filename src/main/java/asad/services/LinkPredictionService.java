@@ -20,8 +20,12 @@ public interface LinkPredictionService {
     Set<String> getArticleTopicKeywords(String code);
 
     PredictedLinks getPredictedLinks(PredictedLinksRequest predictedLinksRequest);
+    Set<String> getAuthorTopicKeywords(String code);
     List<Author> getCoAuthors(String code);
+    List<String> getAuthorTopicCcs(String code);
+
     List<Author> getPredictedCoAuthors(String code);
+
     List<Article> getRelatedArticles(String code);
 
     List<Article> getPredictedRelatedArticles(String code);
@@ -30,10 +34,6 @@ public interface LinkPredictionService {
 
     List<String> getArticleTopic(String code);
 
-    List<String> getAuthorTopicCcs(String code);
-
-
-    List<String> getAuthorTopicKeywords(String code);
 
     List<TopicProbability> getAuthorTopicProbability(String code);
 

@@ -51,6 +51,16 @@ public class LinkPredictionController {
         return linkPredictionService.getArticleTopicCcs(code);
     }
 
+    @GetMapping("author-topics-keyword/{code}")
+    public Set<String> getAuthorTopicKeywords(@PathVariable String code) {
+        return linkPredictionService.getAuthorTopicKeywords(code);
+    }
+
+    @GetMapping("author-topic-ccs/{code}")
+    public List<String> getAuthorTopicCcs(@PathVariable String code) {
+        return linkPredictionService.getAuthorTopicCcs(code);
+    }
+
     @GetMapping("co-authors/{code}")
     public List<Author> getCoAuthors(@PathVariable String code) {
         return linkPredictionService.getCoAuthors(code);
@@ -84,16 +94,6 @@ public class LinkPredictionController {
     @GetMapping("article-integrated-topics/{code}")
     public List<String> getArticleTopics(@PathVariable String code) {
         return linkPredictionService.getArticleTopic(code);
-    }
-
-    @GetMapping("author-topic-ccs/{code}")
-    public List<String> getAuthorTopicCcs(@PathVariable String code) {
-        return linkPredictionService.getAuthorTopicCcs(code);
-    }
-
-    @GetMapping("author-topics-keyword/{code}")
-    public List<String> getAuthorTopicKeywords(@PathVariable String code) {
-        return linkPredictionService.getAuthorTopicKeywords(code);
     }
 
     @GetMapping("author-topics-probability/{code}")

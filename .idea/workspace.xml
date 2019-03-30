@@ -2,17 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="5808d580-8ab9-4069-b0d8-5981e0aca519" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/asad/model/dataaccess/entity/ArticleKeyword.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/asad/model/dataaccess/entity/Taxonomy.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/asad/model/dataaccess/repository/ArticleKeywordRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/asad/model/ArticleAuthor.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/asad/model/entity/Article.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/asad/model/dataaccess/entity/Article.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/asad/model/entity/Author.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/asad/model/dataaccess/entity/Author.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/asad/model/wrapper/ArticleWrapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/asad/model/wrapper/ArticleWrapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/asad/model/wrapper/AuthorWrapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/asad/model/wrapper/AuthorWrapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/asad/repository/ArticleRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/asad/model/dataaccess/repository/ArticleRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/asad/repository/AuthorRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/asad/model/dataaccess/repository/AuthorRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/asad/model/dataaccess/repository/ArticleKeywordRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/asad/model/dataaccess/repository/ArticleKeywordRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/asad/model/dataaccess/repository/ArticleRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/asad/model/dataaccess/repository/ArticleRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/asad/model/dataaccess/repository/AuthorRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/asad/model/dataaccess/repository/AuthorRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/asad/runner/LinkPredictionController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/asad/runner/LinkPredictionController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/asad/services/LinkPredictionService.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/asad/services/LinkPredictionService.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/asad/services/LinkPredictionServiceFakeResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/asad/services/LinkPredictionServiceFakeResult.java" afterDir="false" />
@@ -31,30 +24,20 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/asad/services/LinkPredictionServiceImpl.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="73" column="5" lean-forward="true" selection-start-line="73" selection-start-column="5" selection-end-line="73" selection-end-column="5" />
-              <folding>
-                <element signature="e#2939#2940#0" expanded="true" />
-                <element signature="e#3033#3034#0" expanded="true" />
-                <element signature="e#3136#3137#0" expanded="true" />
-                <element signature="e#3237#3238#0" expanded="true" />
-                <element signature="e#3347#3348#0" expanded="true" />
-                <element signature="e#3443#3444#0" expanded="true" />
-                <element signature="e#3540#3541#0" expanded="true" />
-                <element signature="e#3639#3640#0" expanded="true" />
-                <element signature="e#3743#3744#0" expanded="true" />
-                <element signature="e#3860#3861#0" expanded="true" />
-                <element signature="e#3978#3979#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="139">
+              <caret line="83" selection-start-line="83" selection-end-line="83" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-autoconfigure/2.0.5.RELEASE/spring-boot-autoconfigure-2.0.5.RELEASE.jar!/org/springframework/boot/autoconfigure/orm/jpa/JpaBaseConfiguration.class">
+        <entry file="file://$PROJECT_DIR$/src/main/java/asad/services/LinkPredictionServiceFakeResult.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="111">
-              <caret line="97" column="50" selection-start-line="97" selection-start-column="50" selection-end-line="97" selection-end-column="50" />
+            <state relative-caret-position="552">
+              <caret line="78" column="14" selection-start-line="78" selection-start-column="14" selection-end-line="78" selection-end-column="14" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -62,30 +45,10 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/asad/model/dataaccess/repository/AuthorRepository.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="15" column="21" lean-forward="true" selection-start-line="15" selection-start-column="21" selection-end-line="15" selection-end-column="21" />
+            <state relative-caret-position="156">
+              <caret line="18" selection-start-line="18" selection-end-line="18" />
               <folding>
                 <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/asad/model/dataaccess/entity/Taxonomy.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="19" column="24" selection-start-line="19" selection-start-column="24" selection-end-line="19" selection-end-column="24" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#622#623#0" expanded="true" />
-                <element signature="e#647#648#0" expanded="true" />
-                <element signature="e#679#680#0" expanded="true" />
-                <element signature="e#706#707#0" expanded="true" />
-                <element signature="e#758#759#0" expanded="true" />
-                <element signature="e#805#806#0" expanded="true" />
-                <element signature="e#837#838#0" expanded="true" />
-                <element signature="e#865#866#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -95,7 +58,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/asad/model/dataaccess/entity/Author.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="144">
-              <caret line="19" column="61" lean-forward="true" selection-start-line="18" selection-start-column="4" selection-end-line="19" selection-end-column="61" />
+              <caret line="19" column="61" selection-start-line="18" selection-start-column="4" selection-end-line="19" selection-end-column="61" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -106,8 +69,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/asad/model/dataaccess/repository/ArticleRepository.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="216">
-              <caret line="18" column="87" lean-forward="true" selection-start-line="18" selection-start-column="87" selection-end-line="18" selection-end-column="87" />
+            <state relative-caret-position="156">
+              <caret line="20" selection-start-line="20" selection-end-line="20" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -116,10 +79,22 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/asad/model/dataaccess/entity/ArticleKeyword.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="276">
+              <caret line="23" column="28" selection-start-line="23" selection-start-column="28" selection-end-line="23" selection-end-column="28" />
+              <folding>
+                <element signature="e#525#526#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/asad/model/dataaccess/entity/Article.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="180">
-              <caret line="33" column="51" lean-forward="true" selection-start-line="33" selection-start-column="51" selection-end-line="33" selection-end-column="51" />
+            <state relative-caret-position="360">
+              <caret line="33" column="43" selection-start-line="33" selection-start-column="43" selection-end-line="33" selection-end-column="43" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#2645#2646#0" expanded="true" />
@@ -132,8 +107,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/asad/model/dataaccess/repository/ArticleKeywordRepository.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="8" column="53" selection-start-line="8" selection-start-column="53" selection-end-line="8" selection-end-column="53" />
+            <state relative-caret-position="144">
+              <caret line="18" selection-start-line="18" selection-end-line="18" />
             </state>
           </provider>
         </entry>
@@ -141,8 +116,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/asad/services/LinkPredictionService.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="111">
-              <caret line="17" column="16" selection-start-line="17" selection-start-column="16" selection-end-line="17" selection-end-column="16" />
+            <state relative-caret-position="180">
+              <caret line="24" column="7" selection-start-line="24" selection-start-column="7" selection-end-line="24" selection-end-column="7" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -153,8 +128,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/asad/runner/LinkPredictionController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="202">
-              <caret line="48" column="27" lean-forward="true" selection-start-line="48" selection-start-column="17" selection-end-line="48" selection-end-column="34" />
+            <state relative-caret-position="504">
+              <caret line="53" column="38" selection-start-line="53" selection-start-column="17" selection-end-line="53" selection-end-column="38" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -188,7 +163,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/Application.java" />
         <option value="$PROJECT_DIR$/src/main/java/services/Testi.java" />
         <option value="$PROJECT_DIR$/src/main/java/runner/Testi.java" />
         <option value="$PROJECT_DIR$/src/main/java/model/Result.java" />
@@ -227,18 +201,19 @@
         <option value="$PROJECT_DIR$/src/main/java/asad/model/entity/Article.java" />
         <option value="$PROJECT_DIR$/src/main/java/asad/model/entity/ArticleKeyword.java" />
         <option value="$PROJECT_DIR$/src/main/java/asad/repository/ArticleKeywordRepository.java" />
-        <option value="$PROJECT_DIR$/src/main/java/asad/services/LinkPredictionService.java" />
-        <option value="$PROJECT_DIR$/src/main/java/asad/services/LinkPredictionServiceFakeResult.java" />
-        <option value="$PROJECT_DIR$/src/main/java/asad/runner/LinkPredictionController.java" />
         <option value="$PROJECT_DIR$/src/main/java/asad/model/entity/Article_taxonomy.java" />
         <option value="$PROJECT_DIR$/src/main/java/asad/model/entity/Taxonomy.java" />
         <option value="$PROJECT_DIR$/src/main/java/asad/model/entity/dao/Dao.java" />
         <option value="$PROJECT_DIR$/src/main/java/asad/model/entity/repository/ArticleKeywordRepository.java" />
-        <option value="$PROJECT_DIR$/src/main/java/asad/model/dataaccess/repository/ArticleKeywordRepository.java" />
         <option value="$PROJECT_DIR$/src/main/java/asad/model/dataaccess/entity/Article.java" />
         <option value="$PROJECT_DIR$/src/main/java/asad/model/dataaccess/entity/Taxonomy.java" />
+        <option value="$PROJECT_DIR$/src/main/java/asad/model/dataaccess/repository/AuthorRepository.java" />
+        <option value="$PROJECT_DIR$/src/main/java/asad/model/dataaccess/repository/ArticleKeywordRepository.java" />
         <option value="$PROJECT_DIR$/src/main/java/asad/model/dataaccess/repository/ArticleRepository.java" />
         <option value="$PROJECT_DIR$/src/main/java/asad/services/LinkPredictionServiceImpl.java" />
+        <option value="$PROJECT_DIR$/src/main/java/asad/services/LinkPredictionService.java" />
+        <option value="$PROJECT_DIR$/src/main/java/asad/services/LinkPredictionServiceFakeResult.java" />
+        <option value="$PROJECT_DIR$/src/main/java/asad/runner/LinkPredictionController.java" />
       </list>
     </option>
   </component>
@@ -262,7 +237,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
@@ -377,6 +351,7 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -386,7 +361,7 @@
     <property name="RequestMappingsPanelWidth1" value="75" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1553867679840" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1553869249410" />
     <property name="extract.method.default.visibility" value="private" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/pom.xml" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
@@ -533,18 +508,20 @@
       <workItem from="1553584035929" duration="2266000" />
       <workItem from="1553586521850" duration="12904000" />
       <workItem from="1553669999898" duration="19150000" />
-      <workItem from="1553759164457" duration="23387000" />
+      <workItem from="1553759164457" duration="25110000" />
+      <workItem from="1553877595143" duration="3029000" />
+      <workItem from="1553950612641" duration="1023000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="143340000" />
+    <option name="totallyTimeSpent" value="149115000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="67" y="25" width="1299" height="743" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.27410358" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.28366533" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -555,12 +532,12 @@
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" weight="0.32956383" />
       <window_info anchor="bottom" id="Run" order="2" weight="0.2714055" />
-      <window_info active="true" anchor="bottom" id="Debug" order="3" sideWeight="0.4996016" visible="true" weight="0.42003232" />
+      <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.4996016" weight="0.42003232" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Spring" order="7" />
-      <window_info anchor="bottom" id="Terminal" order="8" weight="0.50080776" />
+      <window_info anchor="bottom" id="Terminal" order="8" weight="0.27786753" />
       <window_info anchor="bottom" id="Docker" order="9" show_stripe_button="false" />
       <window_info anchor="bottom" id="Event Log" order="10" sideWeight="0.5003984" side_tool="true" weight="0.42003232" />
       <window_info anchor="bottom" id="Messages" order="11" weight="0.1825525" />
@@ -644,6 +621,12 @@
           <line>52</line>
           <properties />
           <option name="timeStamp" value="9" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/asad/services/LinkPredictionServiceImpl.java</url>
+          <line>83</line>
+          <properties />
+          <option name="timeStamp" value="10" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -860,23 +843,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/asad/model/ArticleAuthor.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="24">
-          <caret line="2" column="17" selection-start-line="2" selection-start-column="17" selection-end-line="2" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/asad/services/LinkPredictionServiceFakeResult.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="203">
-          <caret line="83" column="14" selection-start-line="83" selection-start-column="14" selection-end-line="83" selection-end-column="14" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/asad/model/ArticleAuthor.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/asad/model/WordProbability.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="132">
@@ -894,16 +861,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/asad/model/entity/dao/Dao.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="192">
-          <caret line="16" column="43" lean-forward="true" selection-start-line="16" selection-start-column="43" selection-end-line="16" selection-end-column="43" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/asad/model/entity/dao/Dao.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/asad/model/TopicProbability.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="192">
@@ -913,6 +871,70 @@
             <element signature="e#696#697#0" expanded="true" />
             <element signature="e#744#745#0" expanded="true" />
             <element signature="e#778#779#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-autoconfigure/2.0.5.RELEASE/spring-boot-autoconfigure-2.0.5.RELEASE.jar!/org/springframework/boot/autoconfigure/orm/jpa/JpaBaseConfiguration.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="660">
+          <caret line="97" column="50" selection-start-line="97" selection-start-column="50" selection-end-line="97" selection-end-column="50" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/asad/model/dataaccess/entity/Taxonomy.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="192">
+          <caret line="19" column="24" selection-start-line="19" selection-start-column="24" selection-end-line="19" selection-end-column="24" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/asad/services/LinkPredictionServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="139">
+          <caret line="83" selection-start-line="83" selection-end-line="83" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/asad/services/LinkPredictionServiceFakeResult.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="552">
+          <caret line="78" column="14" selection-start-line="78" selection-start-column="14" selection-end-line="78" selection-end-column="14" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/asad/model/dataaccess/repository/AuthorRepository.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="156">
+          <caret line="18" selection-start-line="18" selection-end-line="18" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/asad/model/dataaccess/entity/Author.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="144">
+          <caret line="19" column="61" selection-start-line="18" selection-start-column="4" selection-end-line="19" selection-end-column="61" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/asad/model/dataaccess/repository/ArticleRepository.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="156">
+          <caret line="20" selection-start-line="20" selection-end-line="20" />
+          <folding>
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -927,20 +949,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/asad/model/dataaccess/entity/Author.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="144">
-          <caret line="19" column="61" lean-forward="true" selection-start-line="18" selection-start-column="4" selection-end-line="19" selection-end-column="61" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/asad/model/dataaccess/entity/Article.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="33" column="51" lean-forward="true" selection-start-line="33" selection-start-column="51" selection-end-line="33" selection-end-column="51" />
+        <state relative-caret-position="360">
+          <caret line="33" column="43" selection-start-line="33" selection-start-column="43" selection-end-line="33" selection-end-column="43" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#2645#2646#0" expanded="true" />
@@ -951,32 +963,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/asad/model/dataaccess/repository/ArticleKeywordRepository.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="8" column="53" selection-start-line="8" selection-start-column="53" selection-end-line="8" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/asad/model/dataaccess/repository/AuthorRepository.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="180">
-          <caret line="15" column="21" lean-forward="true" selection-start-line="15" selection-start-column="21" selection-end-line="15" selection-end-column="21" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/org/springframework/boot/spring-boot-autoconfigure/2.0.5.RELEASE/spring-boot-autoconfigure-2.0.5.RELEASE.jar!/org/springframework/boot/autoconfigure/orm/jpa/JpaBaseConfiguration.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="111">
-          <caret line="97" column="50" selection-start-line="97" selection-start-column="50" selection-end-line="97" selection-end-column="50" />
+        <state relative-caret-position="144">
+          <caret line="18" selection-start-line="18" selection-end-line="18" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/asad/services/LinkPredictionService.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="111">
-          <caret line="17" column="16" selection-start-line="17" selection-start-column="16" selection-end-line="17" selection-end-column="16" />
+        <state relative-caret-position="180">
+          <caret line="24" column="7" selection-start-line="24" selection-start-column="7" selection-end-line="24" selection-end-column="7" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -985,58 +980,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/asad/runner/LinkPredictionController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="202">
-          <caret line="48" column="27" lean-forward="true" selection-start-line="48" selection-start-column="17" selection-end-line="48" selection-end-column="34" />
+        <state relative-caret-position="504">
+          <caret line="53" column="38" selection-start-line="53" selection-start-column="17" selection-end-line="53" selection-end-column="38" />
           <folding>
             <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/asad/model/dataaccess/entity/Taxonomy.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="19" column="24" selection-start-line="19" selection-start-column="24" selection-end-line="19" selection-end-column="24" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#622#623#0" expanded="true" />
-            <element signature="e#647#648#0" expanded="true" />
-            <element signature="e#679#680#0" expanded="true" />
-            <element signature="e#706#707#0" expanded="true" />
-            <element signature="e#758#759#0" expanded="true" />
-            <element signature="e#805#806#0" expanded="true" />
-            <element signature="e#837#838#0" expanded="true" />
-            <element signature="e#865#866#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/asad/model/dataaccess/repository/ArticleRepository.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="216">
-          <caret line="18" column="87" lean-forward="true" selection-start-line="18" selection-start-column="87" selection-end-line="18" selection-end-column="87" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/asad/services/LinkPredictionServiceImpl.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="73" column="5" lean-forward="true" selection-start-line="73" selection-start-column="5" selection-end-line="73" selection-end-column="5" />
-          <folding>
-            <element signature="e#2939#2940#0" expanded="true" />
-            <element signature="e#3033#3034#0" expanded="true" />
-            <element signature="e#3136#3137#0" expanded="true" />
-            <element signature="e#3237#3238#0" expanded="true" />
-            <element signature="e#3347#3348#0" expanded="true" />
-            <element signature="e#3443#3444#0" expanded="true" />
-            <element signature="e#3540#3541#0" expanded="true" />
-            <element signature="e#3639#3640#0" expanded="true" />
-            <element signature="e#3743#3744#0" expanded="true" />
-            <element signature="e#3860#3861#0" expanded="true" />
-            <element signature="e#3978#3979#0" expanded="true" />
           </folding>
         </state>
       </provider>
