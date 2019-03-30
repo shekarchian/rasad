@@ -66,7 +66,7 @@ public class LinkPredictionServiceFakeResult implements LinkPredictionService {
     }
 
     @Override
-    public List<String> getAuthorTopicCcs(String code) {
+    public Set<String> getAuthorTopicCcs(String code) {
         return null;
     }
 

@@ -21,8 +21,8 @@ public interface LinkPredictionService {
 
     PredictedLinks getPredictedLinks(PredictedLinksRequest predictedLinksRequest);
     Set<String> getAuthorTopicKeywords(String code);
+    Set<String> getAuthorTopicCcs(String code);
     List<Author> getCoAuthors(String code);
-    List<String> getAuthorTopicCcs(String code);
 
     List<Author> getPredictedCoAuthors(String code);
 

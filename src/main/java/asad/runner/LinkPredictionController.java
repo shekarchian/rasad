@@ -57,7 +57,7 @@ public class LinkPredictionController {
     }
 
     @GetMapping("author-topic-ccs/{code}")
-    public List<String> getAuthorTopicCcs(@PathVariable String code) {
+    public Set<String> getAuthorTopicCcs(@PathVariable String code) {
         return linkPredictionService.getAuthorTopicCcs(code);
     }
 

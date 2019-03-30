@@ -88,8 +88,14 @@ public class LinkPredictionServiceImpl implements LinkPredictionService {
     }
 
     @Override
-    public List<String> getAuthorTopicCcs(String code) {
-        return null;
+    public Set<String> getAuthorTopicCcs(String code) {
+        Set<Taxonomy>  authorTaxonomies = authorRepository.findAuthorTaxonomies(Integer.parseInt(code));
+        Set<String> taxonomies= new HashSet<>();
+        authorTaxonomies.forEach((taxonomy) -> {
+            if (!rootTopicsId.contains(taxonomy.getId()) && !rootTopicsId.contains(taxonomy.getParent_taxonomy_class_id()))
+                taxonomies.add(taxonomy.getTitle());
+        });
+        return taxonomies;
     }
 
     @Override
