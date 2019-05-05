@@ -15,10 +15,8 @@ import asad.model.wrapper.AuthorWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class LinkPredictionServiceImpl implements LinkPredictionService {
@@ -32,7 +30,8 @@ public class LinkPredictionServiceImpl implements LinkPredictionService {
     @Autowired
     private ArticleKeywordRepository articleKeywordRepository;
 
-    private List<Integer> rootTopicsId = Arrays.asList(new Integer[]{2902,2922,3057,3374,3450,3558,3664,3793,3979,4210,4345,4402,4616});
+    private List<Integer> rootTopicsId = Arrays.asList(new Integer[]{2902, 2922, 3057, 3374, 3450, 3558, 3664, 3793, 3979, 4210, 4345, 4402, 4616});
+
     public AuthorWrapper getAuthorInfo(Integer id) {
         Author author = authorRepository.findById(id).get();
         return new AuthorWrapper(author);
@@ -68,9 +67,9 @@ public class LinkPredictionServiceImpl implements LinkPredictionService {
         Set<String> taxonomies = new HashSet<>();
         articleTaxonomies.forEach((taxonomy) -> {
             if (!rootTopicsId.contains(taxonomy.getId()) && !rootTopicsId.contains(taxonomy.getParent_taxonomy_class_id()))
-            taxonomies.add(taxonomy.getTitle());
+                taxonomies.add(taxonomy.getTitle());
         });
-        if (taxonomies.size() <3) {
+        if (taxonomies.size() < 3) {
             articleTaxonomies.forEach((taxonomy) -> {
                 if (rootTopicsId.contains(taxonomy.getParent_taxonomy_class_id()))
                     taxonomies.add(taxonomy.getTitle());
@@ -81,7 +80,7 @@ public class LinkPredictionServiceImpl implements LinkPredictionService {
 
     @Override
     public Set<String> getAuthorTopicKeywords(String code) {
-        Set<ArticleKeyword>  articleKeywords = articleKeywordRepository.findAuthorKeywords(Integer.parseInt(code));
+        Set<ArticleKeyword> articleKeywords = articleKeywordRepository.findAuthorKeywords(Integer.parseInt(code));
         Set<String> keywords = new HashSet<>();
         articleKeywords.forEach((keyword) -> keywords.add(keyword.getKeyword()));
         return keywords;
@@ -89,8 +88,8 @@ public class LinkPredictionServiceImpl implements LinkPredictionService {
 
     @Override
     public Set<String> getAuthorTopicCcs(String code) {
-        Set<Taxonomy>  authorTaxonomies = authorRepository.findAuthorTaxonomies(Integer.parseInt(code));
-        Set<String> taxonomies= new HashSet<>();
+        Set<Taxonomy> authorTaxonomies = authorRepository.findAuthorTaxonomies(Integer.parseInt(code));
+        Set<String> taxonomies = new HashSet<>();
         authorTaxonomies.forEach((taxonomy) -> {
             if (!rootTopicsId.contains(taxonomy.getId()) && !rootTopicsId.contains(taxonomy.getParent_taxonomy_class_id()))
                 taxonomies.add(taxonomy.getTitle());
@@ -99,29 +98,38 @@ public class LinkPredictionServiceImpl implements LinkPredictionService {
     }
 
     @Override
-    public PredictedLinks getPredictedLinks(PredictedLinksRequest predictedLinksRequest) {
-        return null;
+    public Set<Author> getCoAuthors(String code) {
+        Set<Article> articles = authorRepository.findAuthorArticles(Integer.parseInt(code)).getArticles();
+        Map<Author, Integer> authorsMap = createMapOfAuthors(articles, Integer.parseInt(code));
+        Map<Author, Integer> sortedAuthorsMap = sortByValue(authorsMap);
+        return sortedAuthorsMap.keySet();
     }
 
-    @Override
-    public List<Author> getCoAuthors(String code) {
-        return null;
+    private Map<Author, Integer> createMapOfAuthors(Set<Article> articles, Integer authorId) {
+        Map<Author, Integer> authorsMap = new HashMap<>();
+        articles.forEach((article -> {
+            Set<Author> articleAuthors = article.getAuthors();
+            articleAuthors.forEach(author -> {
+                if (author.getId().equals(authorId))
+                    return;
+                if (!authorsMap.containsKey(author)) {
+                    authorsMap.put(author, 1);
+                } else {
+                    authorsMap.put(author, authorsMap.get(author) + 1);
+                }
+            });
+        }));
+        return authorsMap;
     }
 
-    @Override
-    public List<Author> getPredictedCoAuthors(String code) {
-        return null;
+
+    private static Map<Author, Integer> sortByValue(final Map<Author, Integer> wordCounts) {
+        return wordCounts.entrySet()
+                .stream()
+                .sorted((Map.Entry.<Author, Integer>comparingByValue().reversed()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
     }
 
-    @Override
-    public List<Article> getRelatedArticles(String code) {
-        return null;
-    }
-
-    @Override
-    public List<Article> getPredictedRelatedArticles(String code) {
-        return null;
-    }
 
     @Override
     public List<String> getAuthorTopic(String code) {
@@ -142,4 +150,26 @@ public class LinkPredictionServiceImpl implements LinkPredictionService {
     public List<TopicProbability> getArticleTopicProbability(String code) {
         return null;
     }
+
+    @Override
+    public List<Article> getRelatedArticles(String code) {
+        return null;
+    }
+
+    @Override
+    public PredictedLinks getPredictedLinks(PredictedLinksRequest predictedLinksRequest) {
+        return null;
+    }
+
+    @Override
+    public List<Author> getPredictedCoAuthors(String code) {
+        return null;
+    }
+
+    @Override
+    public List<Article> getPredictedRelatedArticles(String code) {
+        return null;
+    }
+
+
 }

@@ -19,4 +19,7 @@ public interface ArticleRepository extends CrudRepository<Article, Integer> {
     @Query("select a.taxonomies from Article a inner join a.taxonomies where a.id = :id")
     Set<Taxonomy> findArticleTaxonomies(@Param("id") Integer id);
 
+    @Query("select article from Article article " +
+            "inner join fetch article.keyword keywords ")
+    Set<Article> findAllArticlesWithKeyword();
 }

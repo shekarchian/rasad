@@ -1,5 +1,7 @@
 package asad;
 
+import asad.services.TopicModelingService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -15,8 +17,12 @@ public class Application {
         SpringApplication.run(Application.class, args);
     }
 
+    @Autowired
+    TopicModelingService topicModelingService;
+
     @Bean
     public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
+        topicModelingService.createArticlesBasedInputForTopicModeling();
         return args -> {
 
             System.out.println("Let's inspect the beans provided by Spring Boot:");
@@ -28,6 +34,7 @@ public class Application {
             }
 
         };
+
     }
 
 }

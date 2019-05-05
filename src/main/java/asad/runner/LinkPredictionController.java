@@ -62,7 +62,7 @@ public class LinkPredictionController {
     }
 
     @GetMapping("co-authors/{code}")
-    public List<Author> getCoAuthors(@PathVariable String code) {
+    public Set<Author> getCoAuthors(@PathVariable String code) {
         return linkPredictionService.getCoAuthors(code);
     }
 

@@ -36,7 +36,7 @@ public class LinkPredictionServiceFakeResult implements LinkPredictionService {
     }
 
     @Override
-    public List<Author> getCoAuthors(String code) {
+    public Set<Author> getCoAuthors(String code) {
         return null;
     }
 

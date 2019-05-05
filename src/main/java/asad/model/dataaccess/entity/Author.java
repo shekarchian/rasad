@@ -21,7 +21,6 @@ public class Author {
 
     private Set<Article> articles = new HashSet<>();
 
-
     public Author() {
     }
 
