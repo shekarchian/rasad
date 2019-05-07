@@ -3,21 +3,21 @@ package asad.model;
 import java.util.List;
 
 public class TopicProbability {
-    private String id;
+    private Integer id;
     private Double probability;
     private List<String> words;
 
-    public TopicProbability(String id, Double probability, List<String> words) {
+    public TopicProbability(Integer id, Double probability, List<String> words) {
         this.id = id;
         this.probability = probability;
         this.words = words;
     }
 
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

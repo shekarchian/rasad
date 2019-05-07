@@ -3,12 +3,10 @@ package asad.services;
 import asad.model.PredictedLinks;
 import asad.model.PredictedLinksRequest;
 import asad.model.TopicProbability;
-import asad.model.dataaccess.entity.Article;
-import asad.model.dataaccess.entity.ArticleKeyword;
-import asad.model.dataaccess.entity.Author;
-import asad.model.dataaccess.entity.Taxonomy;
+import asad.model.dataaccess.entity.*;
 import asad.model.dataaccess.repository.ArticleKeywordRepository;
 import asad.model.dataaccess.repository.ArticleRepository;
+import asad.model.dataaccess.repository.ArticleTopicDistributionRepository;
 import asad.model.dataaccess.repository.AuthorRepository;
 import asad.model.wrapper.ArticleWrapper;
 import asad.model.wrapper.AuthorWrapper;
@@ -16,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 @Service
@@ -29,6 +28,10 @@ public class LinkPredictionServiceImpl implements LinkPredictionService {
 
     @Autowired
     private ArticleKeywordRepository articleKeywordRepository;
+
+    @Autowired
+    private ArticleTopicDistributionRepository articleTopicDistributionRepository;
+
 
     private List<Integer> rootTopicsId = Arrays.asList(new Integer[]{2902, 2922, 3057, 3374, 3450, 3558, 3664, 3793, 3979, 4210, 4345, 4402, 4616});
 
@@ -132,22 +135,88 @@ public class LinkPredictionServiceImpl implements LinkPredictionService {
 
 
     @Override
+    public List<TopicProbability> getArticleTopicProbability(String code) {
+        List<TopicProbability> topicProbabilities = new ArrayList<>();
+        List<ArticleTopicDistribution> articleTopicDistributions = articleTopicDistributionRepository.findArticleTopic(
+                Integer.parseInt(code));
+        articleTopicDistributions.forEach(atd ->{
+            topicProbabilities.add(new TopicProbability(atd.getTopic().getTopicCode(), atd.getProbability(),
+                    Arrays.asList(atd.getTopic().getWordList().split(" "))));
+        });
+        return topicProbabilities;
+    }
+
+
+    @Override
+    public List<String> getArticleTopic(String code) {
+        List<String> topicTopWords = getTopWordsOfTopic(code);
+        Set<String> keyword = getArticleTopicKeywords(code);
+        Set<String> ccs = getArticleTopicCcs(code);
+        List<String> mergedTopics = new ArrayList<>();
+        AtomicInteger counter = new AtomicInteger();
+        counter.set(0);
+        keyword.forEach(w->{
+            mergedTopics.add(w);
+            counter.getAndIncrement();
+            if (counter.get()> 5)
+                return;
+        });
+        counter.set(0);
+        ccs.forEach(w->{
+            mergedTopics.add(w);
+            counter.getAndIncrement();
+            if (counter.get()> 5)
+                return;
+        });
+        counter.set(0);
+        topicTopWords.forEach(w->{
+            mergedTopics.add(w);
+            counter.getAndIncrement();
+            if (counter.get()> 5)
+                return;
+        });
+
+        return mergedTopics;
+
+    }
+
+    private List<String> getTopWordsOfTopic(String code) {
+        Map<Double, String> topicProbabilitiesMap = new HashMap<>();
+        List<ArticleTopicDistribution> articleTopicDistributions = articleTopicDistributionRepository.findArticleTopic(
+                Integer.parseInt(code));
+        articleTopicDistributions.forEach(atd ->{
+            topicProbabilitiesMap.put(atd.getProbability(), atd.getTopic().getWordList());
+        });
+        List<String> sortedTopics = getSortedListFromTopicsMap(topicProbabilitiesMap);
+        List<String> topWords = new ArrayList<>();
+        String[] splitedWords = sortedTopics.get(0).split(" ");
+        for (int i = 0; i<7; i++) {
+            topWords.add(splitedWords[i]);
+        }
+        splitedWords = sortedTopics.get(1).split(" ");
+        for (int i = 0; i<3; i++) {
+            topWords.add(splitedWords[i]);
+        }
+        return topWords;
+    }
+
+    private List<String> getSortedListFromTopicsMap(Map<Double, String> topicProbabilitiesMap) {
+        Map<Double, String> reverseSortedMap = new TreeMap<Double, String>(Collections.reverseOrder());
+        reverseSortedMap.putAll(topicProbabilitiesMap);
+        List<String> topicList = new ArrayList<>();
+        reverseSortedMap.forEach((p,w)->{
+            topicList.add(w);
+        });
+        return topicList;
+    }
+
+    @Override
     public List<String> getAuthorTopic(String code) {
         return null;
     }
 
     @Override
-    public List<String> getArticleTopic(String code) {
-        return null;
-    }
-
-    @Override
     public List<TopicProbability> getAuthorTopicProbability(String code) {
-        return null;
-    }
-
-    @Override
-    public List<TopicProbability> getArticleTopicProbability(String code) {
         return null;
     }
 

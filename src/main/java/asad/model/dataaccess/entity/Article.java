@@ -37,6 +37,9 @@ public class Article {
     @JoinColumn(name ="article_id")
     private Set<ArticleKeyword> keyword = new HashSet<>();
 
+    @OneToMany(mappedBy = "article")
+    private Set<ArticleTopicDistribution> topicDistributions = new HashSet<>();
+
     public Article() {
     }
 

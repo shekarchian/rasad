@@ -1,6 +1,6 @@
 package asad;
 
-import asad.services.TopicModelingService;
+import asad.scheduledServices.TopicModelingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Bean;
 
 import java.util.Arrays;
 
-@SpringBootApplication
+@SpringBootApplication()
 public class Application {
 
     public static void main(String[] args) {
@@ -22,7 +22,16 @@ public class Application {
 
     @Bean
     public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
-        topicModelingService.createArticlesBasedInputForTopicModeling();
+//        topicModelingService.createArticlesBasedInputForTopicModeling();
+
+// Drop tables
+///////////////////////////////////////////////////////create RPC
+//        topicModelingService.deleteTopicRecords();
+//        topicModelingService.createArticleTopicsTable();
+//        topicModelingService.createArticlesTopicDistribution();
+
+///////////////////////////////////////////////////////
+
         return args -> {
 
             System.out.println("Let's inspect the beans provided by Spring Boot:");

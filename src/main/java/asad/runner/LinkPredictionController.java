@@ -66,9 +66,25 @@ public class LinkPredictionController {
         return linkPredictionService.getCoAuthors(code);
     }
 
-    @PostMapping("predicted-links")
-    public PredictedLinks predictLinks(@RequestBody PredictedLinksRequest predictedLinksRequest) {
-        return linkPredictionService.getPredictedLinks(predictedLinksRequest);
+    @GetMapping("article-integrated-topics/{code}")
+    public List<String> getArticleTopics(@PathVariable String code) {
+        return linkPredictionService.getArticleTopic(code);
+    }
+
+    @GetMapping("article-topics-probability/{code}")
+    public List<TopicProbability> getArticleTopicProbability(@PathVariable String code) {
+        return linkPredictionService.getArticleTopicProbability(code);
+    }
+
+    @GetMapping("author-integrated-topics/{code}")
+    public List<String> getAuthorTopics(@PathVariable String code) {
+        return linkPredictionService.getAuthorTopic(code);
+    }
+
+
+    @GetMapping("author-topics-probability/{code}")
+    public List<TopicProbability> getAuthorTopicProbability(@PathVariable String code) {
+        return linkPredictionService.getAuthorTopicProbability(code);
     }
 
     @GetMapping("predicted-co-authors/{code}")
@@ -86,24 +102,12 @@ public class LinkPredictionController {
         return linkPredictionService.getPredictedRelatedArticles(code);
     }
 
-    @GetMapping("author-integrated-topics/{code}")
-    public List<String> getAuthorTopics(@PathVariable String code) {
-        return linkPredictionService.getAuthorTopic(code);
+
+    @PostMapping("predicted-links")
+    public PredictedLinks predictLinks(@RequestBody PredictedLinksRequest predictedLinksRequest) {
+        return linkPredictionService.getPredictedLinks(predictedLinksRequest);
     }
 
-    @GetMapping("article-integrated-topics/{code}")
-    public List<String> getArticleTopics(@PathVariable String code) {
-        return linkPredictionService.getArticleTopic(code);
-    }
 
-    @GetMapping("author-topics-probability/{code}")
-    public List<TopicProbability> getAuthorTopicProbability(@PathVariable String code) {
-        return linkPredictionService.getAuthorTopicProbability(code);
-    }
-
-    @GetMapping("article-topics-probability/{code}")
-    public List<TopicProbability> getArticleTopicProbability(@PathVariable String code) {
-        return linkPredictionService.getArticleTopicProbability(code);
-    }
 
 }
