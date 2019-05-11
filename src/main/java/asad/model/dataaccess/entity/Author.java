@@ -2,10 +2,7 @@ package asad.model.dataaccess.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -20,6 +17,9 @@ public class Author {
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "authors")
 
     private Set<Article> articles = new HashSet<>();
+
+    @OneToMany(mappedBy = "author")
+    private Set<AuthorTopicDistribution> topicDistributions = new HashSet<>();
 
     public Author() {
     }

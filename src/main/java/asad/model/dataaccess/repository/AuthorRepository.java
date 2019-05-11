@@ -25,4 +25,8 @@ public interface AuthorRepository extends CrudRepository<Author, Integer> {
             "where author.id= :id")
     Set<Taxonomy> findAuthorTaxonomies(@Param("id") Integer id);
 
+    @Query("select author from Author author " +
+            "inner join fetch author.articles article ")
+    Set<Author> findAllAuthorsArticles();
+
 }

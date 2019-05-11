@@ -1,6 +1,10 @@
 package asad.model.dataaccess.entity;
 
+import org.hibernate.annotations.*;
+import org.hibernate.sql.Select;
+
 import javax.persistence.*;
+import javax.persistence.Entity;
 
 @Entity
 public class ArticleKeyword {
@@ -9,7 +13,7 @@ public class ArticleKeyword {
     private String keyword;
 
     @ManyToOne(fetch= FetchType.LAZY)
-    @JoinColumn(name="article_id")
+//    @JoinColumn(name="article_id")
     private Article article;
 
     public ArticleKeyword() {
@@ -18,7 +22,7 @@ public class ArticleKeyword {
     public ArticleKeyword(Integer id, String keyword, Article article) {
         this.id = id;
         this.keyword = keyword;
-        this.article = article;
+//        this.article = article;
     }
 
     public Integer getId() {
@@ -37,11 +41,11 @@ public class ArticleKeyword {
         this.keyword = keyword;
     }
 
-    public Article getArticle() {
-        return article;
-    }
-
-    public void setArticle(Article article) {
-        this.article = article;
-    }
+//    public Article getArticle() {
+//        return article;
+//    }
+//
+//    public void setArticle(Article article) {
+//        this.article = article;
+//    }
 }

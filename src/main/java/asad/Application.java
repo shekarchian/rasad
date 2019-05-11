@@ -22,7 +22,15 @@ public class Application {
 
     @Bean
     public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
-//        topicModelingService.createArticlesBasedInputForTopicModeling();
+
+//        topicModelingService.createDenormalizedLemmatizedArticleText();//todo drop table before run
+//////////////////////////////////////////////////////////////////////
+
+//        topicModelingService.createAuthorBasedInputForTopicModeling();
+
+/////////////////////////////////////////////////////////////////////////////////////
+
+        // topicModelingService.createArticlesBasedInputForTopicModeling();
 
 // Drop tables
 ///////////////////////////////////////////////////////create RPC
@@ -31,6 +39,10 @@ public class Application {
 //        topicModelingService.createArticlesTopicDistribution();
 
 ///////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
+//        topicModelingService.createAuthorTopicsTable();
+//        topicModelingService.createAuthorsTopicDistribution();
 
         return args -> {
 

@@ -11,6 +11,7 @@ import java.util.Set;
 
 
 public interface ArticleRepository extends CrudRepository<Article, Integer> {
+
     Optional<Article> findById(Integer id);
 
     @Query("select a from Article a join fetch a.authors where a.id = :id")
@@ -21,6 +22,10 @@ public interface ArticleRepository extends CrudRepository<Article, Integer> {
 
     @Query("select article from Article article " +
             "left join fetch article.keyword keywords ")
-    Set<Article> findAllArticlesWithKeyword();
+    Set<Article> findAllArticlesWithKeyword();//todo change
 
+
+    @Query("select article from Article article " +
+            "left join fetch article.taxonomies ")
+    Set<Article> findAllArticlesWithTaxonomy();
 }

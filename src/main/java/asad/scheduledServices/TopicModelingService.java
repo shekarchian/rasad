@@ -1,9 +1,6 @@
 package asad.scheduledServices;
 
-import asad.model.dataaccess.entity.Article;
-import asad.model.dataaccess.entity.ArticleKeyword;
-import asad.model.dataaccess.entity.ArticleTopicDistribution;
-import asad.model.dataaccess.entity.Topic;
+import asad.model.dataaccess.entity.*;
 import asad.model.dataaccess.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,9 +23,60 @@ public class TopicModelingService {
     private TopicRepository topicRepository;
     @Autowired
     private ArticleTopicDistributionRepository articleTopicDistributionRepository;
-    private StanfordLemmatizer stanfordLemmatizer = new StanfordLemmatizer();
+    @Autowired
+    private DenormalizedArticleRepository denormalizedArticleRepository;
+    @Autowired
+    private AuthorTopicDistributionRepository authorTopicDistributionRepository;
 
-    public void createArticlesBasedInputForTopicModeling() {
+    private StanfordLemmatizer lemmatizer = new StanfordLemmatizer();
+
+    public void createDenormalizedLemmatizedArticleText() {
+        Set<Article> articles = articleRepository.findAllArticlesWithTaxonomy();
+        articles.forEach(article -> {
+            Set<ArticleKeyword> articleKeywords = articleKeywordRepository.findByArticle_Id(article.getId());
+            denormalizedArticleRepository.save(new DenormalizedLemmatizedArticleText(
+                    article.getId(),
+                    lemmatizer.lemmatize(article.getTitle()),
+                    lemmatizer.lemmatize(article.getAbstractColumn()),
+                    lemmatizer.lemmatize(listTaxonomyToString(article.getTaxonomies())),
+                    lemmatizer.lemmatize(listKeywordsToString(articleKeywords))
+            ));
+        });
+    }
+
+    private String listKeywordsToString(Set<ArticleKeyword> keywords) {
+        String result = "";
+        for (ArticleKeyword element : keywords) {
+            result += element.getKeyword() + " ";
+        }
+        return result;
+    }
+
+    private String listTaxonomyToString(Set<Taxonomy> taxonomies) {
+        String result = "";
+        for (Taxonomy element : taxonomies) {
+            result += element.getTitle() + " ";
+        }
+        return result;
+    }
+
+    public void createAuthorBasedInputForTopicModeling() {
+        Properties properties = getTopicModelingPropertyFile();
+        String topicModelingInputFile = properties.getProperty("author.topic_modeling.files.path") + "/input.txt";
+        Set<Author> authors = authorRepository.findAllAuthorsArticles();
+        try (FileWriter fw = new FileWriter(topicModelingInputFile, false);
+             BufferedWriter bw = new BufferedWriter(fw);
+             PrintWriter out = new PrintWriter(bw)) {
+            authors.forEach(author -> {
+                out.println(getAuthorTextForTopicModelingInput(author));
+            });
+
+        } catch (IOException e) {
+            //exception handling left as an exercise for the reader
+        }
+    }
+
+    public void createArticlesBasedInputForTopicModeling() { // todo update it with lemmatized
         Properties properties = getTopicModelingPropertyFile();
         String topicModelingInputFile = properties.getProperty("article.topic_modeling.files.path") + "/input.txt";
         Set<Article> articles = articleRepository.findAllArticlesWithKeyword();
@@ -42,6 +90,26 @@ public class TopicModelingService {
         } catch (IOException e) {
             //exception handling left as an exercise for the reader
         }
+    }
+
+    private String getAuthorTextForTopicModelingInput(Author author) {
+        String line = "";
+        String text = "";
+        line += "author-" + author.getId() + "\t" + "X\t";
+        for (Article article : author.getArticles()) {
+            DenormalizedLemmatizedArticleText dla = denormalizedArticleRepository.findByArticleId(article.getId());
+            text += dla.getTitle() + " " + dla.getAbstractColumn() + " " + dla.getTaxonomies() + " " +
+                    dla.getKeyword() + " ";
+
+        }
+        Scanner scanner = new Scanner(text);
+        while (scanner.hasNextLine()) {
+            line += scanner.nextLine() + " ";
+            // process the line
+        }
+        scanner.close();
+        return line;
+
     }
 
 
@@ -66,8 +134,24 @@ public class TopicModelingService {
         }
     }
 
+    public void createAuthorTopicsTable() {
+        Properties properties = getTopicModelingPropertyFile();
+        String topicModelingInputFile = properties.getProperty("author.topic_modeling.files.path") + "/topics.txt";
+        String line = null;
+        try (FileReader fr = new FileReader(topicModelingInputFile);
+             BufferedReader br = new BufferedReader(fr)) {
+            while ((line = br.readLine()) != null) {
+                String[] splitedLine = line.split("\t");
+                Topic topic = new Topic(Integer.parseInt(splitedLine[0]), Topic.Type.author, splitedLine[2]);
+                topicRepository.save(topic);
+            }
+        } catch (IOException e) {
+            //exception handling left as an exercise for the reader
+        }
+    }
+
     public void createArticlesTopicDistribution() {
-        Map<Integer, Topic> topicMap = getArticleTopics();
+        Map<Integer, Topic> topicMap = getTopics(Topic.Type.article);
         Properties properties = getTopicModelingPropertyFile();
         String topicModelingTopicCompositionFile = properties.getProperty("article.topic_modeling.files.path") + "/topic-composition.txt";
 //        String topicModelingTopicInputFile = properties.getProperty("article.topic_modeling.files.path") + "/input.txt";
@@ -103,12 +187,47 @@ public class TopicModelingService {
 
     }
 
+    public void createAuthorsTopicDistribution() {
+        Map<Integer, Topic> topicMap = getTopics(Topic.Type.author);
+        Properties properties = getTopicModelingPropertyFile();
+        String topicModelingTopicCompositionFile = properties.getProperty("author.topic_modeling.files.path") + "/topic-composition.txt";
+        String topicCompositionLine = null;
+        try (FileReader topicCompositioniFileReader = new FileReader(topicModelingTopicCompositionFile);
+             BufferedReader topicCompositionBufferReader = new BufferedReader(topicCompositioniFileReader);
+        ) {
+            List<AuthorTopicDistribution> authorTopicDistributions = new ArrayList<>();
+            while ((topicCompositionLine = topicCompositionBufferReader.readLine()) != null) {
+                try {
+                    String[] splitedLine = topicCompositionLine.split("\t");
+                    Integer authorId = extractAuthorleId(splitedLine[1]);
+                    Optional<Author> author = authorRepository.findById(authorId);
+                    for (int i = 0; i < splitedLine.length - 2; i++) {
+                        AuthorTopicDistribution authorTopicDistribution = new AuthorTopicDistribution(
+                                author.get(), topicMap.get(i), Double.parseDouble(splitedLine[i + 2]));
+                        authorTopicDistributions.add(authorTopicDistribution);
+//                        articleTopicDistributionRepository.save(articleTopicDistribution);
+                    }
+                } catch (Exception e) {
+                    System.out.println(e);
+                    System.out.println(topicCompositionLine);
+                }
+            }
+            authorTopicDistributionRepository.saveAll(authorTopicDistributions);
+        } catch (IOException e) {
+            //exception handling left as an exercise for the reader
+        }
+
+    }
+
     private Integer extractArticleId(String text) {
         return Integer.parseInt(text.substring("article-".length()));
     }
 
-    private Map getArticleTopics() {
-        List<Topic> topics = topicRepository.findByType(Topic.Type.article);
+    private Integer extractAuthorleId(String text) {
+        return Integer.parseInt(text.substring("author-".length()));
+    }
+    private Map getTopics(Topic.Type type) {
+        List<Topic> topics = topicRepository.findByType(type);
         Map<Integer, Topic> topicMap = new HashMap<>();
         topics.forEach(t -> topicMap.put(t.getTopicCode(), t));
         return topicMap;
@@ -118,28 +237,15 @@ public class TopicModelingService {
         String line = "";
         String text = "";
         line += "article-" + article.getId() + "\t" + "X\t";
-        text += article.getTitle() + " "
-                + article.getAbstractColumn() + " ";
-        for (ArticleKeyword keyword : article.getKeyword()) {
-            text += keyword.getKeyword() + " ";
-        }
-        List<String> lemma = stanfordLemmatizer.lemmatize(text);
-        String lemmaText = "";
-        for (String w: lemma) {
-            lemmaText = lemmaText + w + " ";
-        }
-        Scanner scanner = new Scanner(lemmaText);
+        DenormalizedLemmatizedArticleText dla = denormalizedArticleRepository.findByArticleId(article.getId());
+        text += dla.getTitle() + " " + dla.getAbstractColumn() + " " + dla.getTaxonomies() + " " +
+                dla.getKeyword() + " ";
+        Scanner scanner = new Scanner(text);
         while (scanner.hasNextLine()) {
             line += scanner.nextLine() + " ";
             // process the line
         }
         scanner.close();
-//        text.replaceAll("\n", " ")
-//                .replaceAll("\r", " ")
-//                .replaceAll("\r\n", " ")
-//                .replaceAll("\\r\\n|\\r|\\n", " ")
-//                .replaceAll(System.getProperty("line.separator"), " ");
-//        line = line + text;
         return line;
     }
 
@@ -155,4 +261,9 @@ public class TopicModelingService {
         }
         return prop;
     }
+
+    public void createCoAuthorsGraphFile() {
+
+    }
+
 }

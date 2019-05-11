@@ -1,4 +1,4 @@
-package asad.runner;
+package asad.controller;
 
 import asad.model.dataaccess.entity.Article;
 import asad.model.dataaccess.entity.Author;
@@ -76,16 +76,16 @@ public class LinkPredictionController {
         return linkPredictionService.getArticleTopicProbability(code);
     }
 
+    @GetMapping("author-topics-probability/{code}")
+    public List<TopicProbability> getAuthorTopicProbability(@PathVariable String code) {
+        return linkPredictionService.getAuthorTopicProbability(code);
+    }
+
     @GetMapping("author-integrated-topics/{code}")
     public List<String> getAuthorTopics(@PathVariable String code) {
         return linkPredictionService.getAuthorTopic(code);
     }
 
-
-    @GetMapping("author-topics-probability/{code}")
-    public List<TopicProbability> getAuthorTopicProbability(@PathVariable String code) {
-        return linkPredictionService.getAuthorTopicProbability(code);
-    }
 
     @GetMapping("predicted-co-authors/{code}")
     public List<Author> getPredictedCoAuthors(@PathVariable String code) {

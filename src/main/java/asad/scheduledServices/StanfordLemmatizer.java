@@ -26,47 +26,57 @@ public class StanfordLemmatizer {
 
     /**
      * Takes a string and returns a list of lemmas.
+     *
      * @param documentText
      * @return
      */
-    public List<String> lemmatize(String documentText)
-    {
-        List<String> lemmas = new LinkedList<String>();
+    public String lemmatize(String documentText) {
 
-        // create an empty Annotation just with the given text
-        Annotation document = new Annotation(documentText);
+        try {
+            List<String> lemmas = new LinkedList<String>();
 
-        // run all Annotators on this text
-        this.pipeline.annotate(document);
+            // create an empty Annotation just with the given text
+            Annotation document = new Annotation(documentText);
 
-        // Iterate over all of the sentences found
-        List<CoreMap> sentences = document.get(SentencesAnnotation.class);
-        for(CoreMap sentence: sentences) {
-            // Iterate over all tokens in a sentence
-            for (CoreLabel token: sentence.get(TokensAnnotation.class)) {
-                // Retrieve and add the lemma for each word into the list of lemmas
-                lemmas.add(token.get(LemmaAnnotation.class));
+            // run all Annotators on this text
+            this.pipeline.annotate(document);
+
+            // Iterate over all of the sentences found
+            List<CoreMap> sentences = document.get(SentencesAnnotation.class);
+            for (CoreMap sentence : sentences) {
+                // Iterate over all tokens in a sentence
+                for (CoreLabel token : sentence.get(TokensAnnotation.class)) {
+                    // Retrieve and add the lemma for each word into the list of lemmas
+                    lemmas.add(token.get(LemmaAnnotation.class));
+                }
             }
-        }
 
-        return lemmas;
+            String output = "";
+            // concats all lemmas in with blank in between
+            for (String str : lemmas) {
+                output = output + str + " ";
+            }
+
+            return output;
+        }catch (Exception e){
+            return documentText;
+        }
     }
-    
-    
+
+
     /**
-     * 
      * @param input
      * @return
      */
-    public String lemmatizeToken(String input){
-    	List<String> lemmatizedInput = this.lemmatize(input);
-    	String output ="";
-    	// concats all lemmas in with blank in between
-    	for (String str: lemmatizedInput){
-    		output = output+str+" ";
-    	}
-    	//cuts off last blank.
-    	output = output.substring(0, output.length()-1);
-    	return output;
-    }
+    /*public String lemmatizeToken(String input) {
+        List<String> lemmatizedInput = this.lemmatize(input);
+        String output = "";
+        // concats all lemmas in with blank in between
+        for (String str : lemmatizedInput) {
+            output = output + str + " ";
+        }
+        //cuts off last blank.
+//    	output = output.substring(0, output.length()-1);
+        return output;
+    }*/
 }

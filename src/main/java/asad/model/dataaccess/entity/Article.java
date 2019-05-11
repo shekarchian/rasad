@@ -1,6 +1,9 @@
 package asad.model.dataaccess.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.LazyCollection;
+import org.springframework.context.annotation.Lazy;
 
 import javax.persistence.*;
 import java.util.*;
@@ -33,9 +36,9 @@ public class Article {
             inverseJoinColumns = {@JoinColumn(name = "taxonomy_class_id")})
     private Set<Taxonomy> taxonomies = new HashSet<>();
 
-    @OneToMany(fetch= FetchType.LAZY)
-    @JoinColumn(name ="article_id")
-    private Set<ArticleKeyword> keyword = new HashSet<>();
+    @OneToMany(mappedBy = "article", fetch = FetchType.LAZY)
+//    @JoinColumn(name = "article_id")
+    private Set<ArticleKeyword> keyword;
 
     @OneToMany(mappedBy = "article")
     private Set<ArticleTopicDistribution> topicDistributions = new HashSet<>();
@@ -126,11 +129,11 @@ public class Article {
         this.taxonomies = taxonomies;
     }
 
-    public Set<ArticleKeyword> getKeyword() {
+    /*public Set<ArticleKeyword> getKeyword() {
         return keyword;
     }
 
     public void setKeyword(Set<ArticleKeyword> keyword) {
         this.keyword = keyword;
-    }
+    }*/
 }

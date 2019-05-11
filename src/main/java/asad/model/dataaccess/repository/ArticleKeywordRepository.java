@@ -1,5 +1,6 @@
 package asad.model.dataaccess.repository;
 
+import asad.model.dataaccess.entity.Article;
 import asad.model.dataaccess.entity.ArticleKeyword;
 import asad.model.dataaccess.entity.Author;
 import org.springframework.data.jpa.repository.Query;
@@ -16,5 +17,6 @@ public interface ArticleKeywordRepository extends CrudRepository<ArticleKeyword,
             "inner join fetch article.authors author " +
             "where author.id = :id ")
     Set<ArticleKeyword> findAuthorKeywords(@Param("id") Integer id);
+
 
 }
