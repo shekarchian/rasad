@@ -1,37 +1,37 @@
 package asad.model;
 
 public class Link {
-    private Node node1;
-    private Node node2;
-    private Double score;
+    private Integer node1Id;
+    private Integer node2Id;
 
-    public Link(Node node1, Node node2, Double score) {
-        this.node1 = node1;
-        this.node2 = node2;
-        this.score = score;
+    public Link(Integer node1Id, Integer node2Id) {
+        this.node1Id = node1Id;
+        this.node2Id = node2Id;
     }
 
-    public Node getNode1() {
-        return node1;
+    public Integer getNode1Id() {
+        return node1Id;
     }
 
-    public void setNode1(Node node1) {
-        this.node1 = node1;
+    public void setNode1Id(Integer node1Id) {
+        this.node1Id = node1Id;
     }
 
-    public Node getNode2() {
-        return node2;
+    public Integer getNode2Id() {
+        return node2Id;
     }
 
-    public void setNode2(Node node2) {
-        this.node2 = node2;
+    public void setNode2Id(Integer node2Id) {
+        this.node2Id = node2Id;
     }
 
-    public Double getScore() {
-        return score;
-    }
-
-    public void setScore(Double score) {
-        this.score = score;
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        Link l = (Link) o;
+        return (this.node1Id == l.node1Id || this.node1Id == l.node2Id) &&
+                (this.node2Id == l.node2Id || this.node2Id == l.node1Id);
     }
 }

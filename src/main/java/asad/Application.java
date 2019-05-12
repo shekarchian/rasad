@@ -44,6 +44,13 @@ public class Application {
 //        topicModelingService.createAuthorTopicsTable();
 //        topicModelingService.createAuthorsTopicDistribution();
 
+        /////////////////////////////////////////////////////////////////////////////////////// link prediction
+
+//        topicModelingService.createCoAuthorsGraphFile();
+
+//        //////////////////////////////////////
+        topicModelingService.createPredictedAuthorsTable();
+
         return args -> {
 
             System.out.println("Let's inspect the beans provided by Spring Boot:");
