@@ -1,15 +1,19 @@
 package asad.services;
 
-import asad.model.PredictedLinks;
-import asad.model.PredictedLinksRequest;
-import asad.model.TopicProbability;
+import asad.model.*;
 import asad.model.dataaccess.entity.*;
 import asad.model.dataaccess.repository.*;
 import asad.model.wrapper.ArticleWrapper;
 import asad.model.wrapper.AuthorWrapper;
+import javassist.compiler.ast.Keyword;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import javax.swing.event.ListDataEvent;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
@@ -285,7 +289,7 @@ public class LinkPredictionServiceImpl implements LinkPredictionService {
     public List<Author> getPredictedCoAuthors(Integer code) {
         List<Author> authors = new ArrayList<>();
         List<AuthorsPredictedLink> apl = authorPredictedLinkRepository.findByAuthorId((code));
-        apl.forEach(link->{
+        apl.forEach(link -> {
             if (link.getAuthor1().equals(code))
                 authors.add(authorRepository.findById(link.getAuthor2()).get());
             else
@@ -333,7 +337,7 @@ public class LinkPredictionServiceImpl implements LinkPredictionService {
     public List<Article> getPredictedRelatedArticles(Integer code) {
         List<Article> articles = new ArrayList<>();
         List<ArticlesPredictedLink> apl = articlePredictedLinkRepository.findByArticleId((code));
-        apl.forEach(link->{
+        apl.forEach(link -> {
             if (link.getArticle1().equals(code))
                 articles.add(articleRepository.findById(link.getArticle2()).get());
             else
@@ -344,10 +348,210 @@ public class LinkPredictionServiceImpl implements LinkPredictionService {
     }
 
     @Override
-    public PredictedLinks getPredictedLinks(PredictedLinksRequest predictedLinksRequest) {
+    public List<PredictedLink> getPredictedLinks(PredictedLinksRequest predictedLinksRequest) {
+        if (predictedLinksRequest.getGraph_type() == PredictedLinksRequest.GraphType.article) {
+            return getArticlesPredictedLinks(predictedLinksRequest);
+        } else if (predictedLinksRequest.getGraph_type() == PredictedLinksRequest.GraphType.author) {
+            return getAuthorsPredictedLinks(predictedLinksRequest);
+        }
         return null;
     }
 
+    /*private List<PredictedLink> getArticlesPredictedLinks(PredictedLinksRequest predictedLinksRequest) {
+        List<PredictedLink> predictedLinkList = new ArrayList<>();
+        Pageable pageable = PageRequest.of(predictedLinksRequest.getPage(),
+                predictedLinksRequest.getSize(), Sort.by("weight").descending());
+        Page<ArticlesPredictedLink> page = articlePredictedLinkRepository.findAll(pageable);
+        List<ArticlesPredictedLink> articlesPredictedLinks = page.getContent();
+        articlesPredictedLinks.forEach(articlesPredictedLink -> {
+            if (predictedLinksRequest.getMethod() == PredictedLinksRequest.Method.ccs){
+                predictedLinkList.add(createArticlesCssLink(articlesPredictedLink));
+            }
+            if (predictedLinksRequest.getMethod() == PredictedLinksRequest.Method.keyword){
+                predictedLinkList.add(createArticlesKeywordLink(articlesPredictedLink));
+            }
+*//*
+            if (predictedLinksRequest.getMethod() == PredictedLinksRequest.Method.topic_modeling){
+                predictedLinkList.add(createArticlesTopicModelingLink(articlesPredictedLink));
+            }
+*//*
+        });
+        return predictedLinkList;
 
+    }*/
+
+    private List<PredictedLink> getArticlesPredictedLinks(PredictedLinksRequest predictedLinksRequest) {
+        List<PredictedLink> predictedLinkList = new ArrayList<>();
+        Pageable pageable = PageRequest.of(predictedLinksRequest.getPage(),
+                predictedLinksRequest.getSize(), Sort.by("weight").descending());
+
+        if (predictedLinksRequest.getMethod() == PredictedLinksRequest.Method.ccs) {
+            Page<ArticlesPredictedLink> page = articlePredictedLinkRepository.findAllTaxonomyLinks(pageable);
+            List<ArticlesPredictedLink> articlesPredictedLinks = page.getContent();
+            articlesPredictedLinks.forEach(articlesPredictedLink -> {
+                predictedLinkList.add(
+                        new PredictedLink(
+                                new Node(articlesPredictedLink.getArticle1(), articlesPredictedLink.getTaxonomy1()),
+                                new Node(articlesPredictedLink.getArticle2(), articlesPredictedLink.getTaxonomy2()),
+                                articlesPredictedLink.getWeight()));
+            });
+        }
+        if (predictedLinksRequest.getMethod() == PredictedLinksRequest.Method.keyword) {
+            Page<ArticlesPredictedLink> page = articlePredictedLinkRepository.findAllKeywordLinks(pageable);
+            List<ArticlesPredictedLink> articlesPredictedLinks = page.getContent();
+            articlesPredictedLinks.forEach(articlesPredictedLink -> {
+                predictedLinkList.add(
+                        new PredictedLink(
+                                new Node(articlesPredictedLink.getArticle1(), articlesPredictedLink.getKeywords1()),
+                                new Node(articlesPredictedLink.getArticle2(), articlesPredictedLink.getKeywords2()),
+                                articlesPredictedLink.getWeight()));
+            });
+        }
+        return predictedLinkList;
+
+    }
+
+    /*private PredictedLink createArticlesTopicModelingLink(ArticlesPredictedLink articlesPredictedLink) {
+        List<String> topTopicWords1 = getArticleTopWordsOfTopic(String.valueOf(articlesPredictedLink.getArticle1()));
+        List<String> topTopicWords2 = getArticleTopWordsOfTopic(String.valueOf(articlesPredictedLink.getArticle2()));
+
+        PredictedLink predictedLink = new PredictedLink(
+                new Node(articlesPredictedLink.getArticle1(), topTopicWords1),
+                new Node(articlesPredictedLink.getArticle2(), topTopicWords2),
+                articlesPredictedLink.getWeight());
+        return predictedLink;
+    }
+
+
+    private PredictedLink createArticlesCssLink(ArticlesPredictedLink articlesPredictedLink) {
+        Set<Taxonomy> article1Taxonomy = articleRepository.findArticleTaxonomies(articlesPredictedLink.getArticle1());
+        Set<Taxonomy> article2Taxonomy = articleRepository.findArticleTaxonomies(articlesPredictedLink.getArticle2());
+        List<String> taxonomeis1 = getTaxonomiesStringList(article1Taxonomy);
+        List<String> taxonomeis2 = getTaxonomiesStringList(article2Taxonomy);
+        PredictedLink predictedLink = new PredictedLink(
+                new Node(articlesPredictedLink.getArticle1(), taxonomeis1),
+                new Node(articlesPredictedLink.getArticle2(), taxonomeis2),
+                articlesPredictedLink.getWeight());
+        return predictedLink;
+    }
+
+    private PredictedLink createArticlesKeywordLink(ArticlesPredictedLink articlesPredictedLink) {
+        Set<ArticleKeyword> article1Keyword = articleKeywordRepository.findByArticle_Id(articlesPredictedLink.getArticle1());
+        Set<ArticleKeyword> article2Keyword = articleKeywordRepository.findByArticle_Id(articlesPredictedLink.getArticle2());
+        List<String> keywords1 = getKeywordsStringList(article1Keyword);
+        List<String> keywords2 = getKeywordsStringList(article2Keyword);
+        PredictedLink predictedLink = new PredictedLink(
+                new Node(articlesPredictedLink.getArticle1(), keywords1),
+                new Node(articlesPredictedLink.getArticle2(), keywords2),
+                articlesPredictedLink.getWeight());
+        return predictedLink;
+    }*/
+
+    private List<String> getTaxonomiesStringList(Set<Taxonomy> article2Taxonomy) {
+        List<String> taxonomiesString = new ArrayList<>();
+        article2Taxonomy.forEach(taxonomy -> {
+            taxonomiesString.add(taxonomy.getTitle());
+        });
+        return taxonomiesString;
+    }
+
+    private List<String> getKeywordsStringList(Set<ArticleKeyword> articleKeywords) {
+        List<String> keywordsStringList = new ArrayList<>();
+        articleKeywords.forEach(articleKeyword -> {
+            keywordsStringList.add(articleKeyword.getKeyword());
+        });
+        return keywordsStringList;
+    }
+
+    private List<PredictedLink> getAuthorsPredictedLinks(PredictedLinksRequest predictedLinksRequest) {
+        List<PredictedLink> predictedLinkList = new ArrayList<>();
+        Pageable pageable = PageRequest.of(predictedLinksRequest.getPage(),
+                predictedLinksRequest.getSize(), Sort.by("weight").descending());
+
+        if (predictedLinksRequest.getMethod() == PredictedLinksRequest.Method.ccs) {
+            Page<AuthorsPredictedLink> page = authorPredictedLinkRepository.findAllTaxonomyLinks(pageable);
+            List<AuthorsPredictedLink> authorsPredictedLinks = page.getContent();
+            authorsPredictedLinks.forEach(authorsPredictedLink -> {
+                predictedLinkList.add(
+                        new PredictedLink(
+                                new Node(authorsPredictedLink.getAuthor1(), authorsPredictedLink.getTaxonomy1()),
+                                new Node(authorsPredictedLink.getAuthor2(), authorsPredictedLink.getTaxonomy2()),
+                                authorsPredictedLink.getWeight()));
+            });
+        }
+        if (predictedLinksRequest.getMethod() == PredictedLinksRequest.Method.keyword) {
+            Page<AuthorsPredictedLink> page = authorPredictedLinkRepository.findAllKeywordLinks(pageable);
+            List<AuthorsPredictedLink> authorsPredictedLinks = page.getContent();
+            authorsPredictedLinks.forEach(authorsPredictedLink -> {
+                predictedLinkList.add(
+                        new PredictedLink(
+                                new Node(authorsPredictedLink.getAuthor1(), authorsPredictedLink.getKeywords1()),
+                                new Node(authorsPredictedLink.getAuthor2(), authorsPredictedLink.getKeywords2()),
+                                authorsPredictedLink.getWeight()));
+            });
+        }
+        return predictedLinkList;
+    }
+
+/*
+    private List<PredictedLink> getAuthorsPredictedLinks(PredictedLinksRequest predictedLinksRequest) {
+        List<PredictedLink> predictedLinkList = new ArrayList<>();
+        Pageable pageable = PageRequest.of(predictedLinksRequest.getPage(),
+                predictedLinksRequest.getSize(), Sort.by("weight").descending());
+        Page<AuthorsPredictedLink> page = authorPredictedLinkRepository.findAll(pageable);
+        List<AuthorsPredictedLink> authorssPredictedLinks = page.getContent();
+        authorssPredictedLinks.forEach(authorsPredictedLink -> {
+            if (predictedLinksRequest.getMethod() == PredictedLinksRequest.Method.ccs) {
+                predictedLinkList.add(createAuthorsCssLink(authorsPredictedLink));
+            }
+            if (predictedLinksRequest.getMethod() == PredictedLinksRequest.Method.keyword) {
+                predictedLinkList.add(createAuthorsKeywordLink(authorsPredictedLink));
+            }
+*/
+/*
+            if (predictedLinksRequest.getMethod() == PredictedLinksRequest.Method.topic_modeling){
+                predictedLinkList.add(createAuthorsTopicModelingLink(authorsPredictedLink));
+            }
+*//*
+
+        });
+        return predictedLinkList;
+    }
+*/
+
+    /*private PredictedLink createAuthorsCssLink(AuthorsPredictedLink articlesPredictedLink) {
+        Set<Taxonomy> authors1Taxonomy = authorRepository.findAuthorTaxonomies(articlesPredictedLink.getAuthor1());
+        Set<Taxonomy> authors2Taxonomy = authorRepository.findAuthorTaxonomies(articlesPredictedLink.getAuthor2());
+        List<String> taxonomeis1 = getTaxonomiesStringList(authors1Taxonomy);
+        List<String> taxonomeis2 = getTaxonomiesStringList(authors2Taxonomy);
+        PredictedLink predictedLink = new PredictedLink(
+                new Node(articlesPredictedLink.getAuthor1(), taxonomeis1),
+                new Node(articlesPredictedLink.getAuthor2(), taxonomeis2),
+                articlesPredictedLink.getWeight());
+        return predictedLink;
+    }
+
+    private PredictedLink createAuthorsKeywordLink(AuthorsPredictedLink articlesPredictedLink) {
+        Set<ArticleKeyword> author1Keyword = articleKeywordRepository.findAuthorKeywords(articlesPredictedLink.getAuthor1());
+        Set<ArticleKeyword> author2Keyword = articleKeywordRepository.findAuthorKeywords(articlesPredictedLink.getAuthor2());
+        List<String> keywords1 = getKeywordsStringList(author1Keyword);
+        List<String> keywords2 = getKeywordsStringList(author2Keyword);
+        PredictedLink predictedLink = new PredictedLink(
+                new Node(articlesPredictedLink.getAuthor1(), keywords1),
+                new Node(articlesPredictedLink.getAuthor2(), keywords2),
+                articlesPredictedLink.getWeight());
+        return predictedLink;
+    }
+
+    private PredictedLink createAuthorsTopicModelingLink(AuthorsPredictedLink articlesPredictedLink) {
+        List<String> topTopicWords1 = getAuthorleTopWordsOfTopic(String.valueOf(articlesPredictedLink.getAuthor1()));
+        List<String> topTopicWords2 = getAuthorleTopWordsOfTopic(String.valueOf(articlesPredictedLink.getAuthor2()));
+
+        PredictedLink predictedLink = new PredictedLink(
+                new Node(articlesPredictedLink.getAuthor1(), topTopicWords1),
+                new Node(articlesPredictedLink.getAuthor2(), topTopicWords2),
+                articlesPredictedLink.getWeight());
+        return predictedLink;
+    }*/
 
 }

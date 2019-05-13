@@ -1,6 +1,6 @@
 package asad.services;
 
-import asad.model.PredictedLinks;
+import asad.model.PredictedLink;
 import asad.model.PredictedLinksRequest;
 import asad.model.TopicProbability;
 import asad.model.dataaccess.entity.Article;
@@ -31,7 +31,7 @@ public class LinkPredictionServiceFakeResult implements LinkPredictionService {
     }
 
     @Override
-    public PredictedLinks getPredictedLinks(PredictedLinksRequest predictedLinksRequest) {
+    public List<PredictedLink> getPredictedLinks(PredictedLinksRequest predictedLinksRequest) {
         return null;
     }
 

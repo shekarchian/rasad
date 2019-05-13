@@ -2,13 +2,19 @@ package asad.model;
 
 public class PredictedLinksRequest {
     public enum GraphType {author, article}
-
-    public enum Method {topic_modeling, ccs, keyword}
+    public enum Method {ccs, keyword}
 
     private GraphType graph_type;
     private Method method;
-    private Integer links_number;
-    private Integer topic_size;
+    private Integer page;
+    private Integer size;
+
+    public PredictedLinksRequest(GraphType graph_type, Method method, Integer page, Integer size) {
+        this.graph_type = graph_type;
+        this.method = method;
+        this.page = page;
+        this.size = size;
+    }
 
     public GraphType getGraph_type() {
         return graph_type;
@@ -26,19 +32,19 @@ public class PredictedLinksRequest {
         this.method = method;
     }
 
-    public Integer getLinks_number() {
-        return links_number;
+    public Integer getPage() {
+        return page;
     }
 
-    public void setLinks_number(Integer links_number) {
-        this.links_number = links_number;
+    public void setPage(Integer page) {
+        this.page = page;
     }
 
-    public Integer getTopic_size() {
-        return topic_size;
+    public Integer getSize() {
+        return size;
     }
 
-    public void setTopic_size(Integer topic_size) {
-        this.topic_size = topic_size;
+    public void setSize(Integer size) {
+        this.size = size;
     }
 }

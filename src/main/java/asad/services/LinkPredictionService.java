@@ -1,6 +1,6 @@
 package asad.services;
 
-import asad.model.PredictedLinks;
+import asad.model.PredictedLink;
 import asad.model.PredictedLinksRequest;
 import asad.model.TopicProbability;
 import asad.model.dataaccess.entity.Article;
@@ -19,7 +19,7 @@ public interface LinkPredictionService {
 
     Set<String> getArticleTopicKeywords(String code);
 
-    PredictedLinks getPredictedLinks(PredictedLinksRequest predictedLinksRequest);
+    List<PredictedLink> getPredictedLinks(PredictedLinksRequest predictedLinksRequest);
     Set<String> getAuthorTopicKeywords(String code);
     Set<String> getAuthorTopicCcs(String code);
     Set<Author> getCoAuthors(String code);

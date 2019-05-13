@@ -104,7 +104,7 @@ public class LinkPredictionController {
 
 
     @PostMapping("predicted-links")
-    public PredictedLinks predictLinks(@RequestBody PredictedLinksRequest predictedLinksRequest) {
+    public List<PredictedLink> predictLinks(@RequestBody PredictedLinksRequest predictedLinksRequest) {
         return linkPredictionService.getPredictedLinks(predictedLinksRequest);
     }
 

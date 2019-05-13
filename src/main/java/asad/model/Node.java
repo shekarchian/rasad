@@ -1,19 +1,31 @@
 package asad.model;
 
-import java.util.List;
-
 public class Node {
-    private List<WordProbability> words;
+    private Integer code;
+    private String words;
 
-    public Node(List<WordProbability> words) {
+    public Node() {
+    }
+
+    public Node(Integer code, String words) {
+        this.code = code;
         this.words = words;
     }
 
-    public List<WordProbability> getWords() {
+    public Integer getCode() {
+        return code;
+    }
+
+    public void setCode(Integer code) {
+        this.code = code;
+    }
+
+    public String getWords() {
         return words;
     }
 
-    public void setWords(List<WordProbability> words) {
+    public void setWords(String words) {
         this.words = words;
     }
 }
+

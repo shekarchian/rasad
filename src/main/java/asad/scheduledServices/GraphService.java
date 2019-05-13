@@ -1,14 +1,8 @@
 package asad.scheduledServices;
 
 import asad.model.Link;
-import asad.model.dataaccess.entity.Article;
-import asad.model.dataaccess.entity.ArticlesPredictedLink;
-import asad.model.dataaccess.entity.Author;
-import asad.model.dataaccess.entity.AuthorsPredictedLink;
-import asad.model.dataaccess.repository.ArticlePredictedLinkRepository;
-import asad.model.dataaccess.repository.ArticleRepository;
-import asad.model.dataaccess.repository.AuthorPredictedLinkRepository;
-import asad.model.dataaccess.repository.AuthorRepository;
+import asad.model.dataaccess.entity.*;
+import asad.model.dataaccess.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,6 +23,8 @@ public class GraphService {
     private AuthorRepository authorRepository;
     @Autowired
     private ArticleRepository articleRepository;
+    @Autowired
+    private ArticleKeywordRepository articleKeywordRepository;
 
     private Properties getTopicModelingPropertyFile() {
         Properties prop = null;
@@ -43,7 +39,47 @@ public class GraphService {
         return prop;
     }
 
-    public void createPredictedAuthorsTable() {
+    public void createAuthorsPredictedLinkTable() {
+        Properties properties = getTopicModelingPropertyFile();
+        File dir = new File(properties.getProperty("author.link_prediction.files.path"));
+        File[] foundFiles = dir.listFiles(new FilenameFilter() {
+            public boolean accept(File dir, String name) {
+                return name.startsWith("input-");
+            }
+        });
+        List<AuthorsPredictedLink> authorsPredictedLinks = new ArrayList<>();
+        String line = null;
+        try (FileReader fr = new FileReader(foundFiles[0]);
+             BufferedReader br = new BufferedReader(fr)) {
+            while ((line = br.readLine()) != null) {
+                String[] splitedLine = line.split("\t");
+                if (Double.valueOf(splitedLine[2]) < .3) {
+                    break;
+                }
+                Set<Taxonomy> authorTaxonomies1 = authorRepository.findAuthorTaxonomies(Integer.valueOf(splitedLine[0]));
+                Set<Taxonomy> authorTaxonomies2 = authorRepository.findAuthorTaxonomies(Integer.valueOf(splitedLine[1]));
+                Set<ArticleKeyword> authorKeywords1 = articleKeywordRepository.findAuthorKeywords(Integer.valueOf(splitedLine[0]));
+                Set<ArticleKeyword> authorKeywords2 = articleKeywordRepository.findAuthorKeywords(Integer.valueOf(splitedLine[1]));
+
+                String taxonomies1 = getTaxonomiesStringList(authorTaxonomies1);
+                String taxonomies2 = getTaxonomiesStringList(authorTaxonomies2);
+                String keywords1 = getKeywordsStringList(authorKeywords1);
+                String keywords2 = getKeywordsStringList(authorKeywords2);
+                AuthorsPredictedLink apl = new AuthorsPredictedLink(
+                        (Integer.valueOf(splitedLine[0])),
+                        (Integer.valueOf(splitedLine[1])),
+                        Double.valueOf(splitedLine[2]),
+                        keywords1, keywords2, taxonomies1, taxonomies2);
+                authorsPredictedLinks.add(apl);
+
+            }
+        } catch (IOException e) {
+            //exception handling left as an exercise for the reader
+        }
+        authorPredictedLinkRepository.saveAll(authorsPredictedLinks);
+    }
+
+    /*public void createPredictedAuthorsTable() {
         Properties properties = getTopicModelingPropertyFile();
 //        String topicModelingInputFile = properties.getProperty("article.topic_modeling.files.path") + "/topics.txt";
 
@@ -74,7 +110,7 @@ public class GraphService {
             //exception handling left as an exercise for the reader
         }
         authorPredictedLinkRepository.saveAll(authorsPredictedLinks);
-    }
+    }*/
 
     public Map<Link, Integer> getCoAuthorsGraph(Iterable<Author> authors) {
         Map<Link, Integer> authorsGraph = new HashMap<>();
@@ -219,10 +255,19 @@ public class GraphService {
                 if (Double.valueOf(splitedLine[2]) < .3) {
                     break;
                 }
+                Set<Taxonomy> articleTaxonomies1 = articleRepository.findArticleTaxonomies(Integer.valueOf(splitedLine[0]));
+                Set<Taxonomy> articleTaxonomies2 = articleRepository.findArticleTaxonomies(Integer.valueOf(splitedLine[1]));
+                Set<ArticleKeyword> articleKeywords1 = articleKeywordRepository.findByArticle_Id(Integer.valueOf(splitedLine[0]));
+                Set<ArticleKeyword> articleKeywords2 = articleKeywordRepository.findByArticle_Id(Integer.valueOf(splitedLine[1]));
+                String taxonomies1 = getTaxonomiesStringList(articleTaxonomies1);
+                String taxonomies2 = getTaxonomiesStringList(articleTaxonomies2);
+                String keywords1 = getKeywordsStringList(articleKeywords1);
+                String keywords2 = getKeywordsStringList(articleKeywords2);
                 ArticlesPredictedLink apl = new ArticlesPredictedLink(
                         (Integer.valueOf(splitedLine[0])),
                         (Integer.valueOf(splitedLine[1])),
-                        Double.valueOf(splitedLine[2]));
+                        Double.valueOf(splitedLine[2]),
+                        keywords1, keywords2, taxonomies1, taxonomies2);
                 articlesPredictedLinks.add(apl);
 
             }
@@ -230,5 +275,20 @@ public class GraphService {
             //exception handling left as an exercise for the reader
         }
         articlePredictedLinkRepository.saveAll(articlesPredictedLinks);
+    }
+
+    private String getTaxonomiesStringList(Set<Taxonomy> article2Taxonomy) {
+        String taxonomiesString = "";
+        for (Taxonomy taxonomy : article2Taxonomy)
+            taxonomiesString += taxonomy.getTitle() + ", ";
+        return taxonomiesString;
+    }
+
+    private String getKeywordsStringList(Set<ArticleKeyword> articleKeywords) {
+        String keywordsStringList = "";
+        for (ArticleKeyword articleKeyword : articleKeywords)
+            keywordsStringList += articleKeyword.getKeyword() +  ", ";
+
+        return keywordsStringList;
     }
 }
