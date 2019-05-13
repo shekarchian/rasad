@@ -1,6 +1,7 @@
 package asad.model.dataaccess.repository;
 
 import asad.model.dataaccess.entity.Article;
+import asad.model.dataaccess.entity.Author;
 import asad.model.dataaccess.entity.Taxonomy;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -28,4 +29,14 @@ public interface ArticleRepository extends CrudRepository<Article, Integer> {
     @Query("select article from Article article " +
             "left join fetch article.taxonomies ")
     Set<Article> findAllArticlesWithTaxonomy();
+
+    @Query("select article1 from Article article1 " +
+            "inner join fetch article1.authors author " +
+            "inner join fetch  author.articles article2 " +
+            "where article1.id = :id ")
+    Article findArticleAuthors(@Param("id") Integer id);
+
+    @Query("select article from Article article " +
+            "inner join fetch article.authors")
+    Set<Article> findAllArticlesAuthors();
 }

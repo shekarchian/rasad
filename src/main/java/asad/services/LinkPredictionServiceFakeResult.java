@@ -41,17 +41,17 @@ public class LinkPredictionServiceFakeResult implements LinkPredictionService {
     }
 
     @Override
-    public List<Author> getPredictedCoAuthors(String code) {
+    public List<Author> getPredictedCoAuthors(Integer code) {
         return null;
     }
 
     @Override
-    public List<Article> getRelatedArticles(String code) {
+    public Set<Article> getRelatedArticles(String code) {
         return null;
     }
 
     @Override
-    public List<Article> getPredictedRelatedArticles(String code) {
+    public List<Article> getPredictedRelatedArticles(Integer code) {
         return null;
     }
 

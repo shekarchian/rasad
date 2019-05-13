@@ -264,82 +264,10 @@ public class TopicModelingService {
         return prop;
     }
 
-    public void createCoAuthorsGraphFile() {
-        Properties properties = getTopicModelingPropertyFile();
-        Iterable<Author> authors = authorRepository.findAllAuthorsArticles();
-        Map<Link, Integer> coAuthorGraph = getCoAuthorsGraph(authors);
-        Map<Integer, Integer> authorsSeqNum = new HashMap<>();
-        String topicModelingInputFile = properties.getProperty("author.link_prediction.files.path") + "/input.net";
-        try (FileWriter fw = new FileWriter(topicModelingInputFile, false);
-             BufferedWriter bw = new BufferedWriter(fw);
-             PrintWriter out = new PrintWriter(bw)
-        ){
-            out.println("*Vertices " + ((Set<Author>) authors).size());
-            final int[] counter = {0};
-            authors.forEach(author -> {
-                counter[0]++;
-                authorsSeqNum.put(author.getId(), counter[0]);
-                out.println(counter[0] + " " + author.getId());
-            });
-            out.println("*Edges");
-            coAuthorGraph.forEach((link, weight) -> {
-                out.println(authorsSeqNum.get(link.getNode1Id()) + " " + authorsSeqNum.get(link.getNode2Id()) + " " + weight);
-            });
-        } catch (IOException e) {
-            //exception handling left as an exercise for the reader
-        }
 
 
-    }
 
-    public Map<Link, Integer> getCoAuthorsGraph(Iterable<Author> authors) {
-        Map<Link, Integer> authorsGraph = new HashMap<>();
-        authors.forEach(author -> {
-            Map<Author, Integer> coAuthors = getMapOfCoAuthors(author.getArticles(), author.getId());
-            coAuthors.forEach((ca, w) -> {
-                if (w>1)
-                    System.out.println(ca.getId());
-                Link link = new Link(author.getId(), ca.getId());
-                if (!authorsGraph.containsKey(link)) {
-                    authorsGraph.put(link, w);
-                }
-            });
-        });
-        return authorsGraph;
-    }
 
-    private Map<Author, Integer> getMapOfCoAuthors(Set<Article> articles, Integer authorId) {
-        Map<Author, Integer> authorsMap = new HashMap<>();
-        articles.forEach((article -> {
-            article = articleRepository.findArticleCompleteInfo(article.getId());
-            Set<Author> articleAuthors = article.getAuthors();
-            articleAuthors.forEach(author -> {
-                if (author.getId().equals(authorId))
-                    return;
-                if (!authorsMap.containsKey(author)) {
-                    authorsMap.put(author, 1);
-                } else {
-                    authorsMap.put(author, authorsMap.get(author) + 1);
-                }
-            });
-        }));
-        return authorsMap;
-    }
 
-    public void createPredictedAuthorsTable() {
-        Properties properties = getTopicModelingPropertyFile();
-        String topicModelingInputFile = properties.getProperty("article.topic_modeling.files.path") + "/topics.txt";
-        String line = null;
-        try (FileReader fr = new FileReader(topicModelingInputFile);
-             BufferedReader br = new BufferedReader(fr)) {
-            while ((line = br.readLine()) != null) {
-                String[] splitedLine = line.split("\t");
-                Topic topic = new Topic(Integer.parseInt(splitedLine[0]), Topic.Type.article, splitedLine[2]);
-                topicRepository.save(topic);
-            }
-        } catch (IOException e) {
-            //exception handling left as an exercise for the reader
-        }
 
-    }
 }

@@ -89,17 +89,17 @@ public class LinkPredictionController {
 
     @GetMapping("predicted-co-authors/{code}")
     public List<Author> getPredictedCoAuthors(@PathVariable String code) {
-        return linkPredictionService.getPredictedCoAuthors(code);
+        return linkPredictionService.getPredictedCoAuthors(Integer.parseInt(code));
     }
 
     @GetMapping("related-articles/{code}")
-    public List<Article> getRelatedArticles(@PathVariable String code) {
+    public Set<Article> getRelatedArticles(@PathVariable String code) {
         return linkPredictionService.getRelatedArticles(code);
     }
 
     @GetMapping("predicted-related-articles/{code}")
     public List<Article> getPredictedRelatedArticles(@PathVariable String code) {
-        return linkPredictionService.getPredictedRelatedArticles(code);
+        return linkPredictionService.getPredictedRelatedArticles(Integer.parseInt(code));
     }
 
 

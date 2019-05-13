@@ -1,5 +1,6 @@
 package asad;
 
+import asad.scheduledServices.GraphService;
 import asad.scheduledServices.TopicModelingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -19,6 +20,8 @@ public class Application {
 
     @Autowired
     TopicModelingService topicModelingService;
+    @Autowired
+    GraphService graphService;
 
     @Bean
     public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
@@ -49,7 +52,14 @@ public class Application {
 //        topicModelingService.createCoAuthorsGraphFile();
 
 //        //////////////////////////////////////
-        topicModelingService.createPredictedAuthorsTable();
+        ///////////////////////////////////////drop table
+//        topicModelingService.createPredictedAuthorsTable();
+
+        //////////////////////////////////
+//        graphService.createRelatedArticlesGraphFile();
+
+        /////////////////////////////////////////////////////////////drop table
+//        graphService.createArticlesPredictedLinkTable();
 
         return args -> {
 

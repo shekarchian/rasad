@@ -17,7 +17,7 @@ public interface AuthorRepository extends CrudRepository<Author, Integer> {
             "inner join fetch author.articles article1 " +
             "inner join fetch article1.authors author2 " +
             "where author.id = :id ")
-    Author findAuthorArticles(@Param("id") Integer id);
+    Author findAuthorArticlesAuthors(@Param("id") Integer id);
 
     @Query("select taxonomy from Author author " +
             "inner join author.articles article " +
@@ -28,5 +28,10 @@ public interface AuthorRepository extends CrudRepository<Author, Integer> {
     @Query("select author from Author author " +
             "inner join fetch author.articles article ")
     Set<Author> findAllAuthorsArticles();
+
+    @Query("select author from Author author " +
+            "inner join fetch author.articles article1 " +
+            "where author.id = :id ")
+    Author findAuthorArticles(@Param("id") Integer id);
 
 }

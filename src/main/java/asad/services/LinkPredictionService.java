@@ -24,11 +24,11 @@ public interface LinkPredictionService {
     Set<String> getAuthorTopicCcs(String code);
     Set<Author> getCoAuthors(String code);
 
-    List<Author> getPredictedCoAuthors(String code);
+    List<Author> getPredictedCoAuthors(Integer code);
 
-    List<Article> getRelatedArticles(String code);
+    Set<Article> getRelatedArticles(String code);
 
-    List<Article> getPredictedRelatedArticles(String code);
+    List<Article> getPredictedRelatedArticles(Integer code);
 
     List<String> getAuthorTopic(String code);
 

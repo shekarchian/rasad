@@ -1,5 +1,6 @@
 package asad.model.dataaccess.entity;
 
+import asad.model.Link;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.LazyCollection;
@@ -136,4 +137,13 @@ public class Article {
     public void setKeyword(Set<ArticleKeyword> keyword) {
         this.keyword = keyword;
     }*/
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        Article a = (Article) o;
+        return (this.id == a.getId());
+    }
 }
