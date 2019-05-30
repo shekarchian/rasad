@@ -18,11 +18,10 @@ import java.util.Set;
 @RequestMapping("/api/link-prediction")
 public class LinkPredictionController {
 
-    /*@Qualifier("linkPredictionServiceFakeResult")
-    @Autowired
-    private LinkPredictionService linkPredictionService;*/
+//    @Qualifier("linkPredictionServiceFakeResult")
 
     @Qualifier("linkPredictionServiceImpl")
+
     @Autowired
     private LinkPredictionService linkPredictionService;
 
