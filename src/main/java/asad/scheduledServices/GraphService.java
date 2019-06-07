@@ -3,11 +3,14 @@ package asad.scheduledServices;
 import asad.model.Link;
 import asad.model.dataaccess.entity.*;
 import asad.model.dataaccess.repository.*;
+import asad.utils.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.util.*;
+
+import static asad.utils.Utility.getAddressProperty;
 
 /**
  * @author Reza Shekarchian
@@ -26,22 +29,11 @@ public class GraphService {
     @Autowired
     private ArticleKeywordRepository articleKeywordRepository;
 
-    private Properties getTopicModelingPropertyFile() {
-        Properties prop = null;
-        try (InputStream input = new FileInputStream("src/main/resources/TopicModel.properties")) {
-            prop = new Properties();
-            prop.load(input);
-//            System.out.println(prop.getProperty("article.topic_modeling.files.path"));
-//            System.out.println(prop.getProperty("author.topic_modeling.files.path"));
-        } catch (IOException ex) {
-            ex.printStackTrace();
-        }
-        return prop;
-    }
-
     public void createAuthorsPredictedLinkTable() {
-        Properties properties = getTopicModelingPropertyFile();
-        File dir = new File(properties.getProperty("author.link_prediction.files.path"));
+        System.out.println("started createAuthorsPredictedLinkTable");
+
+        Properties properties = Utility.getTopicModelingPropertyFile();
+        File dir = new File(getAddressProperty("author.link_prediction.files.path"));
         File[] foundFiles = dir.listFiles(new FilenameFilter() {
             public boolean accept(File dir, String name) {
                 return name.startsWith("input-");
@@ -77,6 +69,9 @@ public class GraphService {
             //exception handling left as an exercise for the reader
         }
         authorPredictedLinkRepository.saveAll(authorsPredictedLinks);
+
+        System.out.println("ended createAuthorsPredictedLinkTable");
+
     }
 
     /*public void createPredictedAuthorsTable() {
@@ -147,11 +142,13 @@ public class GraphService {
     }
 
     public void createCoAuthorsGraphFile() {
-        Properties properties = getTopicModelingPropertyFile();
+        System.out.println("started createCoAuthorsGraphFile");
+
+        Properties properties = Utility.getTopicModelingPropertyFile();
         Iterable<Author> authors = authorRepository.findAllAuthorsArticles();
         Map<Link, Integer> coAuthorGraph = getCoAuthorsGraph(authors);
         Map<Integer, Integer> authorsSeqNum = new HashMap<>();
-        String topicModelingInputFile = properties.getProperty("author.link_prediction.files.path") + "/input.net";
+        String topicModelingInputFile = getAddressProperty("author.link_prediction.files.path") + "/input.net";
         try (FileWriter fw = new FileWriter(topicModelingInputFile, false);
              BufferedWriter bw = new BufferedWriter(fw);
              PrintWriter out = new PrintWriter(bw)
@@ -170,16 +167,18 @@ public class GraphService {
         } catch (IOException e) {
             //exception handling left as an exercise for the reader
         }
+        System.out.println("ended createCoAuthorsGraphFile");
 
 
     }
 
     public void createRelatedArticlesGraphFile() {
-        Properties properties = getTopicModelingPropertyFile();
+        System.out.println("started createRelatedArticlesGraphFile");
+        Properties properties = Utility.getTopicModelingPropertyFile();
         Iterable<Article> articles = articleRepository.findAllArticlesAuthors();
         Map<Link, Integer> articleGraph = getArticlesGraph(articles);
         Map<Integer, Integer> articleSeqNum = new HashMap<>();
-        String linkPredictionInputFile = properties.getProperty("article.link_prediction.files.path") + "/input.net";
+        String linkPredictionInputFile = getAddressProperty("article.link_prediction.files.path") + "/input.net";
         try (FileWriter fw = new FileWriter(linkPredictionInputFile, false);
              BufferedWriter bw = new BufferedWriter(fw);
              PrintWriter out = new PrintWriter(bw)
@@ -198,6 +197,8 @@ public class GraphService {
         } catch (IOException e) {
             //exception handling left as an exercise for the reader
         }
+        System.out.println("ended createRelatedArticlesGraphFile");
+
     }
 
     public Map<Link, Integer> getArticlesGraph(Iterable<Article> articles) {
@@ -236,10 +237,12 @@ public class GraphService {
     }
 
     public void createArticlesPredictedLinkTable() {
-        Properties properties = getTopicModelingPropertyFile();
+        System.out.println("started createArticlesPredictedLinkTable");
+
+        Properties properties = Utility.getTopicModelingPropertyFile();
 //        String topicModelingInputFile = properties.getProperty("article.topic_modeling.files.path") + "/topics.txt";
 
-        File dir = new File(properties.getProperty("article.link_prediction.files.path"));
+        File dir = new File(getAddressProperty("article.link_prediction.files.path"));
         File[] foundFiles = dir.listFiles(new FilenameFilter() {
             public boolean accept(File dir, String name) {
                 return name.startsWith("input-");
@@ -275,6 +278,8 @@ public class GraphService {
             //exception handling left as an exercise for the reader
         }
         articlePredictedLinkRepository.saveAll(articlesPredictedLinks);
+        System.out.println("ended createArticlesPredictedLinkTable");
+
     }
 
     private String getTaxonomiesStringList(Set<Taxonomy> article2Taxonomy) {
@@ -290,5 +295,53 @@ public class GraphService {
             keywordsStringList += articleKeyword.getKeyword() +  ", ";
 
         return keywordsStringList;
+    }
+
+    public void runArticleLinkPrediction() {
+        Properties properties = Utility.getTopicModelingPropertyFile();
+
+        String cleanInputFile = "sed -i -e '$a\\'  " + getAddressProperty("article.link_prediction.files.path") + "/input.net";
+        String linkPredictionCommand = "linkpred " + getAddressProperty("article.link_prediction.files.path") + "/input.net" +
+                " -p " + properties.getProperty("article.link_prediction.method") + " -o cache-predictions";
+
+        System.out.println("Started article link prediction");
+
+        try (FileWriter fw = new FileWriter(getAddressProperty("article.link_prediction.files.path") + "/lp.sh", false);
+             BufferedWriter bw = new BufferedWriter(fw);
+             PrintWriter out = new PrintWriter(bw)) {
+            out.println("echo cleaning input");
+            out.println(cleanInputFile);
+            out.println("echo article link prediction");
+            out.println(linkPredictionCommand);
+            out.println("echo success");
+        } catch (IOException e) {
+            //exception handling left as an exercise for the reader
+        }
+        Utility.executeCommand("chmod u+x " + getAddressProperty("article.link_prediction.files.path") + "/lp.sh");
+        Utility.runBashCommand(getAddressProperty("article.link_prediction.files.path") + "/lp.sh");
+    }
+
+    public void runAuthorLinkPrediction() {
+        Properties properties = Utility.getTopicModelingPropertyFile();
+
+        String cleanInputFile = "sed -i -e '$a\\'  " + getAddressProperty("author.link_prediction.files.path") + "/input.net";
+        String linkPredictionCommand = "linkpred " + getAddressProperty("author.link_prediction.files.path") + "/input.net" +
+                " -p " + properties.getProperty("author.link_prediction.method") + " -o cache-predictions";
+
+        System.out.println("Started author link prediction");
+
+        try (FileWriter fw = new FileWriter(getAddressProperty("author.link_prediction.files.path") + "/lp.sh", false);
+             BufferedWriter bw = new BufferedWriter(fw);
+             PrintWriter out = new PrintWriter(bw)) {
+            out.println("echo cleaning input");
+            out.println(cleanInputFile);
+            out.println("echo author link prediction");
+            out.println(linkPredictionCommand);
+            out.println("echo success");
+        } catch (IOException e) {
+            //exception handling left as an exercise for the reader
+        }
+        Utility.executeCommand("chmod u+x " + getAddressProperty("author.link_prediction.files.path") + "/lp.sh");
+        Utility.runBashCommand(getAddressProperty("author.link_prediction.files.path") + "/lp.sh");
     }
 }

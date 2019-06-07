@@ -75,12 +75,12 @@ public class LinkPredictionController {
         return linkPredictionService.getArticleTopicProbability(code);
     }
 
-    @GetMapping("author-topics-probability/{code}")
+    @GetMapping("author-topics-probability/{code}")//
     public List<TopicProbability> getAuthorTopicProbability(@PathVariable String code) {
         return linkPredictionService.getAuthorTopicProbability(code);
     }
 
-    @GetMapping("author-integrated-topics/{code}")
+    @GetMapping("author-integrated-topics/{code}")//
     public List<String> getAuthorTopics(@PathVariable String code) {
         return linkPredictionService.getAuthorTopic(code);
     }

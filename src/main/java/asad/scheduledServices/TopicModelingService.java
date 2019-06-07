@@ -1,13 +1,16 @@
 package asad.scheduledServices;
 
-import asad.model.Link;
 import asad.model.dataaccess.entity.*;
 import asad.model.dataaccess.repository.*;
+import asad.utils.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.*;
 import java.util.*;
+
+import static asad.utils.Utility.getAddressProperty;
+import static asad.utils.Utility.getTopicModelingPropertyFile;
 
 /**
  * @author Reza Shekarchian
@@ -31,7 +34,12 @@ public class TopicModelingService {
 
     private StanfordLemmatizer lemmatizer = new StanfordLemmatizer();
 
+    public void p() {
+        System.out.println("ljlklkjlk");
+    }
+
     public void createDenormalizedLemmatizedArticleText() {
+        System.out.println("started denormalizing ");
         Set<Article> articles = articleRepository.findAllArticlesWithTaxonomy();
         articles.forEach(article -> {
             Set<ArticleKeyword> articleKeywords = articleKeywordRepository.findByArticle_Id(article.getId());
@@ -43,6 +51,7 @@ public class TopicModelingService {
                     lemmatizer.lemmatize(listKeywordsToString(articleKeywords))
             ));
         });
+        System.out.println("ended denormalization");
     }
 
     private String listKeywordsToString(Set<ArticleKeyword> keywords) {
@@ -62,8 +71,9 @@ public class TopicModelingService {
     }
 
     public void createAuthorBasedInputForTopicModeling() {
+        System.out.println("started createAuthorBasedInputForTopicModeling");
         Properties properties = getTopicModelingPropertyFile();
-        String topicModelingInputFile = properties.getProperty("author.topic_modeling.files.path") + "/input.txt";
+        String topicModelingInputFile = getAddressProperty("author.topic_modeling.files.path") + "/input.txt";
         Set<Author> authors = authorRepository.findAllAuthorsArticles();
         try (FileWriter fw = new FileWriter(topicModelingInputFile, false);
              BufferedWriter bw = new BufferedWriter(fw);
@@ -75,11 +85,13 @@ public class TopicModelingService {
         } catch (IOException e) {
             //exception handling left as an exercise for the reader
         }
+        System.out.println("ended");
     }
 
     public void createArticlesBasedInputForTopicModeling() { // todo update it with lemmatized
+        System.out.println("started createArticlesBasedInputForTopicModeling");
         Properties properties = getTopicModelingPropertyFile();
-        String topicModelingInputFile = properties.getProperty("article.topic_modeling.files.path") + "/input.txt";
+        String topicModelingInputFile = getAddressProperty("article.topic_modeling.files.path") + "/input.txt";
         Set<Article> articles = articleRepository.findAllArticlesWithKeyword();
         try (FileWriter fw = new FileWriter(topicModelingInputFile, false);
              BufferedWriter bw = new BufferedWriter(fw);
@@ -91,6 +103,7 @@ public class TopicModelingService {
         } catch (IOException e) {
             //exception handling left as an exercise for the reader
         }
+        System.out.println("ended createArticlesBasedInputForTopicModeling");
     }
 
     private String getAuthorTextForTopicModelingInput(Author author) {
@@ -120,8 +133,9 @@ public class TopicModelingService {
     }
 
     public void createArticleTopicsTable() {
+        System.out.println("started createArticleTopicsTable");
         Properties properties = getTopicModelingPropertyFile();
-        String topicModelingInputFile = properties.getProperty("article.topic_modeling.files.path") + "/topics.txt";
+        String topicModelingInputFile = getAddressProperty("article.topic_modeling.files.path") + "/topics.txt";
         String line = null;
         try (FileReader fr = new FileReader(topicModelingInputFile);
              BufferedReader br = new BufferedReader(fr)) {
@@ -133,11 +147,14 @@ public class TopicModelingService {
         } catch (IOException e) {
             //exception handling left as an exercise for the reader
         }
+        System.out.println("ended createArticleTopicsTable");
+
     }
 
     public void createAuthorTopicsTable() {
+        System.out.println("started createAuthorTopicsTable");
         Properties properties = getTopicModelingPropertyFile();
-        String topicModelingInputFile = properties.getProperty("author.topic_modeling.files.path") + "/topics.txt";
+        String topicModelingInputFile = getAddressProperty("author.topic_modeling.files.path") + "/topics.txt";
         String line = null;
         try (FileReader fr = new FileReader(topicModelingInputFile);
              BufferedReader br = new BufferedReader(fr)) {
@@ -149,13 +166,16 @@ public class TopicModelingService {
         } catch (IOException e) {
             //exception handling left as an exercise for the reader
         }
+        System.out.println("ended createAuthorTopicsTable");
+
     }
 
     public void createArticlesTopicDistribution() {
+        System.out.println("started createArticlesTopicDistribution");
         Map<Integer, Topic> topicMap = getTopics(Topic.Type.article);
         Properties properties = getTopicModelingPropertyFile();
-        String topicModelingTopicCompositionFile = properties.getProperty("article.topic_modeling.files.path") + "/topic-composition.txt";
-//        String topicModelingTopicInputFile = properties.getProperty("article.topic_modeling.files.path") + "/input.txt";
+        String topicModelingTopicCompositionFile = getAddressProperty("article.topic_modeling.files.path") + "/topic-composition.txt";
+//        String topicModelingTopicInputFile = getAddressProperty("article.topic_modeling.files.path") + "/input.txt";
         String topicCompositionLine = null;
 //        String topicInputLine = null;
         try (FileReader topicCompositioniFileReader = new FileReader(topicModelingTopicCompositionFile);
@@ -185,13 +205,16 @@ public class TopicModelingService {
         } catch (IOException e) {
             //exception handling left as an exercise for the reader
         }
+        System.out.println("ended createArticlesTopicDistribution");
 
     }
 
     public void createAuthorsTopicDistribution() {
+        System.out.println("started createAuthorsTopicDistribution");
+
         Map<Integer, Topic> topicMap = getTopics(Topic.Type.author);
         Properties properties = getTopicModelingPropertyFile();
-        String topicModelingTopicCompositionFile = properties.getProperty("author.topic_modeling.files.path") + "/topic-composition.txt";
+        String topicModelingTopicCompositionFile = getAddressProperty("author.topic_modeling.files.path") + "/topic-composition.txt";
         String topicCompositionLine = null;
         try (FileReader topicCompositioniFileReader = new FileReader(topicModelingTopicCompositionFile);
              BufferedReader topicCompositionBufferReader = new BufferedReader(topicCompositioniFileReader);
@@ -217,6 +240,7 @@ public class TopicModelingService {
         } catch (IOException e) {
             //exception handling left as an exercise for the reader
         }
+        System.out.println("ended createAuthorsTopicDistribution");
 
     }
 
@@ -251,22 +275,90 @@ public class TopicModelingService {
         return line;
     }
 
-    private Properties getTopicModelingPropertyFile() {
-        Properties prop = null;
-        try (InputStream input = new FileInputStream("src/main/resources/TopicModel.properties")) {
-            prop = new Properties();
-            prop.load(input);
-//            System.out.println(prop.getProperty("article.topic_modeling.files.path"));
-//            System.out.println(prop.getProperty("author.topic_modeling.files.path"));
-        } catch (IOException ex) {
-            ex.printStackTrace();
+
+
+
+    public boolean runArticleTopicModeling() {
+        Properties properties = getTopicModelingPropertyFile();
+        String cleanInputFileCommand = "tr -dc [:alnum:][\\ ,.]\\\\n < " +
+                getAddressProperty("article.topic_modeling.files.path") + "/input.txt " +
+                "> " +
+                getAddressProperty("article.topic_modeling.files.path") + "/cleaned_input.txt";
+
+        String malletImportCommand = "/opt/mallet-2.0.8/bin/mallet  import-file " +
+                "--input " + getAddressProperty("article.topic_modeling.files.path") + "/input.txt " +
+                "--output " + getAddressProperty("article.topic_modeling.files.path") + "/train.mallet " +
+                "--remove-stopwords --keep-sequence";
+
+        String malletTrainCommand = "/opt/mallet-2.0.8/bin/mallet  train-topics " +
+                " --input " + getAddressProperty("article.topic_modeling.files.path") + "/train.mallet " +
+                " --inferencer-filename inferencer.mallet " +
+                " --num-topics " + properties.getProperty("topic_modeling.number.of.topics") +
+                " --output-topic-keys " + getAddressProperty("article.topic_modeling.files.path") + "/topics.txt " +
+                " --output-doc-topics " + getAddressProperty("article.topic_modeling.files.path") + "/topic-composition.txt " +
+                " --num-threads " + properties.getProperty("topic_modeling.number.of.threads") +
+                " --num-iterations " + properties.getProperty("topic_modeling.number.of.iterations");
+
+        System.out.println("Started article topic medeling");
+
+        try (FileWriter fw = new FileWriter(getAddressProperty("article.topic_modeling.files.path") + "/tm.sh", false);
+             BufferedWriter bw = new BufferedWriter(fw);
+             PrintWriter out = new PrintWriter(bw)) {
+            out.println("echo cleaning input");
+            out.println(cleanInputFileCommand);
+            out.println("echo importing data");
+            out.println(malletImportCommand);
+            out.println("echo training topics");
+            out.println(malletTrainCommand);
+            out.println("echo success");
+        } catch (IOException e) {
+            //exception handling left as an exercise for the reader
         }
-        return prop;
+        Utility.executeCommand("chmod u+x " + getAddressProperty("article.topic_modeling.files.path") + "/tm.sh");
+        Utility.runBashCommand(getAddressProperty("article.topic_modeling.files.path") + "/tm.sh");
+        return true;
     }
 
+    public boolean runAuthorTopicModeling() {
+        Properties properties = getTopicModelingPropertyFile();
+        String cleanInputFileCommand = "tr -dc [:alnum:][\\ ,.]\\\\n < " +
+                getAddressProperty("author.topic_modeling.files.path") + "/input.txt " +
+                "> " +
+                getAddressProperty("author.topic_modeling.files.path") + "/cleaned_input.txt";
 
+        String malletImportCommand = "/opt/mallet-2.0.8/bin/mallet  import-file " +
+                "--input " + getAddressProperty("author.topic_modeling.files.path") + "/input.txt " +
+                "--output " + getAddressProperty("author.topic_modeling.files.path") + "/train.mallet " +
+                "--remove-stopwords --keep-sequence";
 
+        String malletTrainCommand = "/opt/mallet-2.0.8/bin/mallet  train-topics " +
+                " --input " + getAddressProperty("author.topic_modeling.files.path") + "/train.mallet " +
+                " --inferencer-filename inferencer.mallet " +
+                " --num-topics " + properties.getProperty("topic_modeling.number.of.topics") +
+                " --output-topic-keys " + getAddressProperty("author.topic_modeling.files.path") + "/topics.txt " +
+                " --output-doc-topics " + getAddressProperty("author.topic_modeling.files.path") + "/topic-composition.txt " +
+                " --num-threads " + properties.getProperty("topic_modeling.number.of.threads") +
+                " --num-iterations " + properties.getProperty("topic_modeling.number.of.iterations");
 
+        System.out.println("Started author topic medeling");
+
+        try (FileWriter fw = new FileWriter(getAddressProperty("author.topic_modeling.files.path") + "/tm.sh", false);
+             BufferedWriter bw = new BufferedWriter(fw);
+             PrintWriter out = new PrintWriter(bw)) {
+            out.println("echo cleaning input");
+            out.println(cleanInputFileCommand);
+            out.println("echo importing data");
+            out.println(malletImportCommand);
+            out.println("echo training topics");
+            out.println(malletTrainCommand);
+            out.println("echo success");
+        } catch (IOException e) {
+            //exception handling left as an exercise for the reader
+        }
+        Utility.executeCommand("chmod u+x " + getAddressProperty("author.topic_modeling.files.path") + "/tm.sh");
+        Utility.runBashCommand(getAddressProperty("author.topic_modeling.files.path") + "/tm.sh");
+        return true;
+    }
 
 
 

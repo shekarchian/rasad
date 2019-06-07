@@ -1,15 +1,16 @@
 package asad;
 
+import asad.model.dataaccess.dao.GeneralDao;
 import asad.scheduledServices.GraphService;
 import asad.scheduledServices.TopicModelingService;
+import asad.utils.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
 
-import java.util.Arrays;
+import javax.annotation.PostConstruct;
+import java.io.*;
+import java.util.Properties;
 
 @SpringBootApplication()
 public class Application {
@@ -23,56 +24,73 @@ public class Application {
     @Autowired
     GraphService graphService;
 
-    @Bean
+    @Autowired
+    GeneralDao generalDao;
+    /*@Bean
     public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
 
-//        topicModelingService.createDenormalizedLemmatizedArticleText();//todo drop table before run
-//////////////////////////////////////////////////////////////////////
+        return null;
+    }*/
 
-//        topicModelingService.createAuthorBasedInputForTopicModeling();
-
-/////////////////////////////////////////////////////////////////////////////////////
-
-        // topicModelingService.createArticlesBasedInputForTopicModeling();
-
-// Drop tables
-///////////////////////////////////////////////////////create RPC
-//        topicModelingService.deleteTopicRecords();
-//        topicModelingService.createArticleTopicsTable();
-//        topicModelingService.createArticlesTopicDistribution();
-
-///////////////////////////////////////////////////////
-////////////////////////////////////////////////////////////////////////////////
-
-//        topicModelingService.createAuthorTopicsTable();
-//        topicModelingService.createAuthorsTopicDistribution();
-
-        /////////////////////////////////////////////////////////////////////////////////////// link prediction
-
-//        topicModelingService.createCoAuthorsGraphFile();
-
-//        //////////////////////////////////////
-        ///////////////////////////////////////drop table
-//        topicModelingService.createPredictedAuthorsTable();
-
-        //////////////////////////////////
-//        graphService.createRelatedArticlesGraphFile();
-
-        /////////////////////////////////////////////////////////////drop table
-//        graphService.createArticlesPredictedLinkTable();
-//        graphService.createAuthorsPredictedLinkTable();
-        return args -> {
-
-            System.out.println("Let's inspect the beans provided by Spring Boot:");
-
-            String[] beanNames = ctx.getBeanDefinitionNames();
-            Arrays.sort(beanNames);
-            for (String beanName : beanNames) {
-                System.out.println(beanName);
-            }
-
-        };
-
+    @PostConstruct
+    public void preProcess() throws IOException {
+        Properties properties = getPropertyFile("src/main/resources/scheduled.services.properties");
+        if (Boolean.parseBoolean(properties.getProperty("runner_permission"))) {
+            dropPreProcessingTables();
+            changeProperty("src/main/resources/scheduled.services.properties", "runner_permission", "false");
+        }
     }
+
+
+    void dropPreProcessingTables() throws IOException {
+        Utility.removeAndCreateNeededDirectories();
+        generalDao.truncateTables();
+        topicModelingService.createDenormalizedLemmatizedArticleText();
+
+        topicModelingService.createAuthorBasedInputForTopicModeling();
+        topicModelingService.createArticlesBasedInputForTopicModeling();
+
+        topicModelingService.runArticleTopicModeling();
+        topicModelingService.runAuthorTopicModeling();
+
+        topicModelingService.createArticleTopicsTable();
+        topicModelingService.createArticlesTopicDistribution();
+
+        topicModelingService.createAuthorTopicsTable();
+        topicModelingService.createAuthorsTopicDistribution();
+
+        graphService.createCoAuthorsGraphFile();
+        graphService.createRelatedArticlesGraphFile();
+
+        graphService.runArticleLinkPrediction();
+        graphService.runAuthorLinkPrediction();
+
+        graphService.createArticlesPredictedLinkTable();
+        graphService.createAuthorsPredictedLinkTable();
+        System.out.println("END OF PREPROCCESSING.");
+    }
+
+    private Properties getPropertyFile(String fileName) {
+        Properties prop = null;
+        try (InputStream input = new FileInputStream(fileName)) {
+            prop = new Properties();
+            prop.load(input);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return prop;
+    }
+
+    public static void changeProperty(String filename, String key, String value) {
+        try {
+            Properties prop = new Properties();
+            prop.load(new FileInputStream(filename));
+            prop.setProperty(key, value);
+            prop.store(new FileOutputStream(filename), null);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 }
