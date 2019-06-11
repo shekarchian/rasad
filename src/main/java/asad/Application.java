@@ -7,6 +7,10 @@ import asad.utils.Utility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+import org.springframework.util.ResourceUtils;
 
 import javax.annotation.PostConstruct;
 import java.io.*;
@@ -34,11 +38,12 @@ public class Application {
 
     @PostConstruct
     public void preProcess() throws IOException {
-        Properties properties = getPropertyFile("src/main/resources/scheduled.services.properties");
+        Properties properties = getPropertyFile("scheduled.services.properties");
         if (Boolean.parseBoolean(properties.getProperty("runner_permission"))) {
             dropPreProcessingTables();
-            changeProperty("src/main/resources/scheduled.services.properties", "runner_permission", "false");
+            changeProperty("scheduled.services.properties", "runner_permission", "false");
         }
+        System.out.println("System is ready to use");
     }
 
 
@@ -72,7 +77,10 @@ public class Application {
 
     private Properties getPropertyFile(String fileName) {
         Properties prop = null;
-        try (InputStream input = new FileInputStream(fileName)) {
+        try  {
+            ResourceLoader resourceLoader = new DefaultResourceLoader();
+            Resource banner = resourceLoader.getResource("classpath:"+ fileName);
+            InputStream input = banner.getInputStream();
             prop = new Properties();
             prop.load(input);
         } catch (IOException ex) {

@@ -1,6 +1,9 @@
 package asad.utils;
 
 import org.apache.tomcat.util.http.fileupload.FileUtils;
+import org.springframework.core.io.DefaultResourceLoader;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 
 import java.io.*;
 import java.util.Properties;
@@ -72,10 +75,22 @@ public class Utility {
     }
 
     public static Properties getTopicModelingPropertyFile() {
-        Properties prop = null;
+        /*Properties prop = null;
         try (InputStream input = new FileInputStream("src/main/resources/TopicModel.properties")) {
             prop = new Properties();
             prop.load(input);;
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return prop;*/
+
+        Properties prop = null;
+        try  {
+            ResourceLoader resourceLoader = new DefaultResourceLoader();
+            Resource banner = resourceLoader.getResource("classpath:"+ "TopicModel.properties");
+            InputStream input = banner.getInputStream();
+            prop = new Properties();
+            prop.load(input);
         } catch (IOException ex) {
             ex.printStackTrace();
         }
