@@ -32,27 +32,12 @@ public class TopicModelingService {
     @Autowired
     private AuthorTopicDistributionRepository authorTopicDistributionRepository;
 
-    private StanfordLemmatizer lemmatizer = new StanfordLemmatizer();
+
 
     public void p() {
         System.out.println("ljlklkjlk");
     }
 
-    public void createDenormalizedLemmatizedArticleText() {
-        System.out.println("started denormalizing ");
-        Set<Article> articles = articleRepository.findAllArticlesWithTaxonomy();
-        articles.forEach(article -> {
-            Set<ArticleKeyword> articleKeywords = articleKeywordRepository.findByArticle_Id(article.getId());
-            denormalizedArticleRepository.save(new DenormalizedLemmatizedArticleText(
-                    article.getId(),
-                    lemmatizer.lemmatize(article.getTitle()),
-                    lemmatizer.lemmatize(article.getAbstractColumn()),
-                    lemmatizer.lemmatize(listTaxonomyToString(article.getTaxonomies())),
-                    lemmatizer.lemmatize(listKeywordsToString(articleKeywords))
-            ));
-        });
-        System.out.println("ended denormalization");
-    }
 
     private String listKeywordsToString(Set<ArticleKeyword> keywords) {
         String result = "";
